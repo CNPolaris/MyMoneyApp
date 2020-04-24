@@ -35,7 +35,11 @@ public class DBUtil {
         PreparedStatement pstm = null;
         Connection connection = null;
         Statement stmt=null;
-        String sql = "insert into UserInfo(username,password)values('xiao','789')";
+        String t="dada";
+        String s="789";
+        //String sql = "insert into UserInfo(username,password)values('data','789')";
+        //String sql = "insert into UserInfo(username,password)values('"+t+"')"+",'"+"789"+"')";
+        String sql = "insert into UserInfo(username,password)values(?,?)";
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             System.out.println("导入成功");
@@ -45,10 +49,13 @@ public class DBUtil {
         }
         try {
             connection = getSQLConnection();
-            stmt=connection.createStatement();
+            //stmt=connection.createStatement();
             //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
-            //pstm = connection.prepareStatement(sql);
-            stmt.executeUpdate(sql);
+            pstm = connection.prepareStatement(sql);
+            //stmt.executeUpdate(sql);
+            pstm.setString(1,t);
+            pstm.setString(2,s);
+            pstm.executeUpdate();
             System.out.println("插入成功");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +69,6 @@ public class DBUtil {
                 e2.printStackTrace();
                 System.out.println("关闭失败");
             }
-
         }
     }
 
@@ -102,7 +108,12 @@ public class DBUtil {
                 e2.printStackTrace();
                 System.out.println("关闭失败");
             }
-
         }
+    }
+    /*登陆检查是否存在该用户，以及用户存在时密码是否正确*/
+    public static boolean loginCheck(String loginName,String loginPass){
+        /*先打开UserInfo数据库，查看用户信息，检查是否存在用户*/
+        String checkSQL="select password from UserInfo where username=loginName";
+        return false;
     }
 }
