@@ -45,13 +45,6 @@ public class DBUtil {
         //String sql = "insert into UserInfo(username,password)values('"+t+"')"+",'"+"789"+"')";
         String sql = "insert into UserInfo(username,password)values(?,?)";
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            System.out.println("导入成功");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("导入失败");
-        }
-        try {
             connection = getSQLConnection();
             //stmt=connection.createStatement();
             //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
@@ -85,8 +78,6 @@ public class DBUtil {
         String sql = "select *from UserInfo";
         try {
             connection = getSQLConnection();
-            //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
-            //pstm = connection.prepareStatement(sql);
             statement=connection.createStatement();
             result=statement.executeQuery(sql);
             while(result.next())
@@ -132,14 +123,7 @@ public class DBUtil {
             /*先查看resultset的结果集是否为空*/
             if(resultSet.next()){
                 /*存在该用户就把密码取出，与输入密码进行比较，因为在userinfo中username是主键，不会有重复*/
-                /*while(resultSet.next()){
-                    pass=resultSet.getString("password");
-                    System.out.println(pass);
-                }*/
                 String pass=resultSet.getString("password").replace(" ","");
-                System.out.println(pass+","+loginPass);
-                System.out.println(pass.length());
-                System.out.println();
                 /*检查密码是否正确*/
                 if(pass.equalsIgnoreCase(loginPass)){
                    result=2;
@@ -168,5 +152,44 @@ public class DBUtil {
         }
         return result;
     }
-
+    /*连接数据库进行注册账户*/
+    public static boolean longinInCheck(String username,String password) throws SQLException {
+        /*在数据库中检查是否已经存在用户名*/
+        String checkSQL="select * from UserInfo where username=?";
+        String insertSQL="insert into UserInfo(username,password)values(?,?)";
+        PreparedStatement pstmcheckt=null;
+        PreparedStatement pstminsert=null;
+        Connection connection = null;
+        ResultSet resultSet=null;
+        try {
+            connection=getSQLConnection();//连接userinfo
+            //执行用户名检查
+            pstmcheckt=connection.prepareStatement(checkSQL);
+            pstmcheckt.setString(1,username);
+            resultSet=pstmcheckt.executeQuery();//保存查询结果
+            //判断是否已经存在
+            if(resultSet.next()){
+                return false;//存在就返回false
+            }
+            else{//不存在就注册
+                pstminsert=connection.prepareStatement(insertSQL);
+                pstminsert.setString(1,username);
+                pstminsert.setString(2,password);
+                pstminsert.executeUpdate();
+                return true;//返回true提示注册成功
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            try{//关闭
+                connection.close();
+                pstminsert.close();
+                pstmcheckt.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

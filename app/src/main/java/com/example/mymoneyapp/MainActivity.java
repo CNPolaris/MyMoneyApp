@@ -44,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 /*主界面点击注册后跳入注册页面*/
                 Intent intent=new Intent(MainActivity.this,LoginInActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
     }
-    /*登录方法*/
-
     /*登录方法*/
     public void loginUp(){
         /*取出*/
