@@ -1,6 +1,10 @@
 package com.example.mymoneyapp;
 import android.app.Dialog;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
+import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -73,7 +77,7 @@ public class DBUtil {
     }
 
     public static void sle() throws SQLException {
-        PreparedStatement pstm = null;
+        //PreparedStatement pstm = null;
         String s="";
         Connection connection = null;
         ResultSet result=null;
@@ -82,7 +86,7 @@ public class DBUtil {
         try {
             connection = getSQLConnection();
             //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
-            pstm = connection.prepareStatement(sql);
+            //pstm = connection.prepareStatement(sql);
             statement=connection.createStatement();
             result=statement.executeQuery(sql);
             while(result.next())
@@ -99,7 +103,7 @@ public class DBUtil {
             System.out.println("插入出错");
         } finally {
             try {
-                pstm.close();
+                //pstm.close();
                 connection.close();
                 statement.close();
                 result.close();
@@ -111,9 +115,58 @@ public class DBUtil {
         }
     }
     /*登陆检查是否存在该用户，以及用户存在时密码是否正确*/
-    public static boolean loginCheck(String loginName,String loginPass){
-        /*先打开UserInfo数据库，查看用户信息，检查是否存在用户*/
-        String checkSQL="select password from UserInfo where username=loginName";
-        return false;
+    public int loginCheck(String loginName, String loginPass) throws SQLException {
+        /*打开UserInfo数据库，查看用户信息，检查是否存在用户*/
+        /*返回值1代表不存在用户，2代表存在用户密码正确，3代表密码不正确*/
+        String checkSQL="select * from UserInfo where username=?";
+        int result=1;
+        PreparedStatement preparedStatement=null;
+        Connection connection = null;
+        ResultSet resultSet=null;
+
+        try {
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(checkSQL);
+            preparedStatement.setString(1,loginName);
+            resultSet=preparedStatement.executeQuery();
+            /*先查看resultset的结果集是否为空*/
+            if(resultSet.next()){
+                /*存在该用户就把密码取出，与输入密码进行比较，因为在userinfo中username是主键，不会有重复*/
+                /*while(resultSet.next()){
+                    pass=resultSet.getString("password");
+                    System.out.println(pass);
+                }*/
+                String pass=resultSet.getString("password").replace(" ","");
+                System.out.println(pass+","+loginPass);
+                System.out.println(pass.length());
+                System.out.println();
+                /*检查密码是否正确*/
+                if(pass.equalsIgnoreCase(loginPass)){
+                   result=2;
+                }
+                else {
+                    result=3;
+                }
+            }
+            else {
+                result=1;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("出错1");
+            e.printStackTrace();
+        }finally {
+            try{
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
+                System.out.println("登陆打开的数据库关闭成功");
+            } catch (Exception e) {
+                System.out.println("出错2");
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
+
 }
