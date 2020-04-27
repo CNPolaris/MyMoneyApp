@@ -156,6 +156,7 @@ public class DBUtil {
     public static boolean longinInCheck(String username,String password) throws SQLException {
         /*在数据库中检查是否已经存在用户名*/
         String checkSQL="select * from UserInfo where username=?";
+        //当符合条件时，向userinfo表中插入数据
         String insertSQL="insert into UserInfo(username,password)values(?,?)";
         PreparedStatement pstmcheckt=null;
         PreparedStatement pstminsert=null;

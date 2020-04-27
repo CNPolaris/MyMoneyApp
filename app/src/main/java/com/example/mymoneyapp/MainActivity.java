@@ -61,38 +61,41 @@ public class MainActivity extends AppCompatActivity {
         if(username.equals("")||password.equals("")){
             Toast.makeText(MainActivity.this,"用户名或密码不能为空",Toast.LENGTH_SHORT).show();
         }
-        /*在数据库中检查是否有该用户*/
-        System.out.println("开始操作");
-        new Thread(){
-            public void run(){
-                System.out.println("触发操作");
-                DBUtil dbUtil=new DBUtil();
-                try {
-                    //System.out.println(dbUtil.loginCheck("bv","456"));
-                    int result=dbUtil.loginCheck(username,password);
-                    System.out.println(result);
-                    //dbUtil.Insert();
-                    //dbUtil.sle();
-                    switch (result){
-                        case 1:
-                            String usernameErr="用户名错误";
-                            errMsg=usernameErr;
-                            check=false;
-                            break;
-                        case 2:
-                            errMsg="登陆成功，欢迎使用";
-                            check=true;
-                            break;
-                        case 3:
-                            String passwordErr="密码错误";
-                            errMsg=passwordErr;
-                            check=false;
-                            break;
+        else{
+            /*在数据库中检查是否有该用户*/
+            System.out.println("开始操作");
+            new Thread(){
+                public void run(){
+                    System.out.println("触发操作");
+                    DBUtil dbUtil=new DBUtil();
+                    try {
+                        //System.out.println(dbUtil.loginCheck("bv","456"));
+                        int result=dbUtil.loginCheck(username,password);
+                        System.out.println(result);
+                        //dbUtil.Insert();
+                        //dbUtil.sle();
+                        switch (result){
+                            case 1:
+                                String usernameErr="用户名错误";
+                                errMsg=usernameErr;
+                                check=false;
+                                break;
+                            case 2:
+                                errMsg="登陆成功，欢迎使用";
+                                check=true;
+                                break;
+                            case 3:
+                                String passwordErr="密码错误";
+                                errMsg=passwordErr;
+                                check=false;
+                                break;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
-            }
-        }.start();
+            }.start();
+        }
+
     }
 }
