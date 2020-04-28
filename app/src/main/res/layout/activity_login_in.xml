@@ -10,15 +10,15 @@
         android:id="@+id/loginbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginLeft="161dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginLeft="116dp"
         android:layout_marginTop="22dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginRight="162dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:layout_marginBottom="365dp"
         android:text="注册"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/clebutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
@@ -60,13 +60,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <LinearLayout
-            android:layout_width="123dp"
+            android:layout_width="111dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="match_parent"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:text="用户名"
                 android:textSize="30sp" />
@@ -93,13 +93,15 @@
         android:layout_marginStart="45dp"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="22dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/loginbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
-            android:layout_width="123dp"
+            android:layout_width="111dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -126,5 +128,21 @@
                 android:inputType="textPersonName" />
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/clebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginRight="75dp"
+        android:layout_marginBottom="357dp"
+        android:text="清除"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loginbutton"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.mymoneyapp;
 import android.app.Dialog;
+import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -34,13 +35,13 @@ public class DBUtil {
         }
         return con;
     }
-
-    public void Insert() throws SQLException {
+    /*插入语句，将新的用户名和密码插入到userinfo*/
+    public static void Insert(String t, String s) throws SQLException {
         PreparedStatement pstm = null;
         Connection connection = null;
         Statement stmt=null;
-        String t="dada";
-        String s="789";
+       // String t="dada";
+       // String s="789";
         //String sql = "insert into UserInfo(username,password)values('data','789')";
         //String sql = "insert into UserInfo(username,password)values('"+t+"')"+",'"+"789"+"')";
         String sql = "insert into UserInfo(username,password)values(?,?)";
@@ -114,7 +115,6 @@ public class DBUtil {
         PreparedStatement preparedStatement=null;
         Connection connection = null;
         ResultSet resultSet=null;
-
         try {
             connection=getSQLConnection();
             preparedStatement=connection.prepareStatement(checkSQL);
@@ -152,45 +152,53 @@ public class DBUtil {
         }
         return result;
     }
-    /*连接数据库进行注册账户*/
-    public static boolean longinInCheck(String username,String password) throws SQLException {
-        /*在数据库中检查是否已经存在用户名*/
+    /*查询用户是否存在
+     *输入用户名和密码查询
+     */
+    public static boolean serach(String name,String scert) throws SQLException {
         String checkSQL="select * from UserInfo where username=?";
-        //当符合条件时，向userinfo表中插入数据
-        String insertSQL="insert into UserInfo(username,password)values(?,?)";
         PreparedStatement pstmcheckt=null;
-        PreparedStatement pstminsert=null;
         Connection connection = null;
         ResultSet resultSet=null;
-        try {
-            connection=getSQLConnection();//连接userinfo
-            //执行用户名检查
+        try{
+            connection=getSQLConnection();
             pstmcheckt=connection.prepareStatement(checkSQL);
-            pstmcheckt.setString(1,username);
-            resultSet=pstmcheckt.executeQuery();//保存查询结果
-            //判断是否已经存在
+            pstmcheckt.setString(1,name);
+            resultSet=pstmcheckt.executeQuery();
             if(resultSet.next()){
-                return false;//存在就返回false
+                return true;
             }
-            else{//不存在就注册
-                pstminsert=connection.prepareStatement(insertSQL);
-                pstminsert.setString(1,username);
-                pstminsert.setString(2,password);
-                pstminsert.executeUpdate();
-                return true;//返回true提示注册成功
+            else{
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("查询失败");
             return false;
         }finally {
-            try{//关闭
-                connection.close();
-                pstminsert.close();
-                pstmcheckt.close();
-                resultSet.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            connection.close();
+            pstmcheckt.close();
+            resultSet.close();
         }
     }
+    /*连接数据库进行注册账户*/
+    public static boolean longinInCheck(String username,String password) throws SQLException {
+        /*在数据库中检查是否已经存在用户名*/
+        String checkSQL = "select * from UserInfo where username=?";
+        //当符合条件时，向userinfo表中插入数据
+        String insertSQL = "insert into UserInfo(username,password)values(?,?)";
+        PreparedStatement pstmcheckt = null;
+        PreparedStatement pstminsert = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        boolean exist=serach(username,password);
+        if(exist==true){
+            return false;
+        }
+        else{
+            Insert(username,password);
+            return true;
+        }
+    }
+
 }
