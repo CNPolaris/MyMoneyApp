@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 loginUp();
                 Toast.makeText(MainActivity.this,errMsg,Toast.LENGTH_SHORT).show();
                 if(check==true){
+
                     Intent intent=new Intent(MainActivity.this,DetailsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                             case 2:
                                 errMsg="登陆成功，欢迎使用";
                                 check=true;
+                                TextView showUserView=findViewById(R.id.showuser);
+                                showUserView.setText(username);
                                 break;
                             case 3:
                                 String passwordErr="密码错误";
