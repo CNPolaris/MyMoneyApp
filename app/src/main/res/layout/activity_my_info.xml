@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MyInfoActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="415dp"
-        android:layout_height="25dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout8"></LinearLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
@@ -32,7 +22,10 @@
         android:id="@+id/linearLayout7"
         android:layout_width="414dp"
         android:layout_height="81dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="570dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -88,25 +81,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="415dp"
-        android:layout_height="25dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7"></LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="412dp"
         android:layout_height="54dp"
+        android:layout_marginTop="106dp"
+        android:layout_marginBottom="480dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="67dp"
@@ -186,13 +170,16 @@
 
     <LinearLayout
         android:id="@+id/linearLayout9"
-        android:layout_width="413dp"
-        android:layout_height="21dp"
+        android:layout_width="412dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="185dp"
+        android:layout_marginBottom="490dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="184dp">
+        app:layout_constraintTop_toTopOf="@+id/linearLayout7">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -207,7 +194,7 @@
                 <TextView
                     android:id="@+id/textView13"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="账单"
                     android:textSize="15sp" />
 
@@ -239,14 +226,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout10"
-        android:layout_width="410dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="446dp"
+        android:layout_width="412dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="99dp"
+        android:layout_marginBottom="430dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
         <LinearLayout
             android:layout_width="68dp"
@@ -316,12 +304,13 @@
         android:id="@+id/linearLayout11"
         android:layout_width="409dp"
         android:layout_height="50dp"
+        android:layout_marginTop="225dp"
         android:layout_marginBottom="398dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
+        app:layout_constraintTop_toTopOf="@+id/linearLayout7">
 
         <LinearLayout
             android:layout_width="68dp"
@@ -363,12 +352,13 @@
         android:id="@+id/linearLayout12"
         android:layout_width="415dp"
         android:layout_height="25dp"
+        android:layout_marginTop="275dp"
         android:layout_marginBottom="373dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout11"></LinearLayout>
+        app:layout_constraintTop_toTopOf="@+id/linearLayout7"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout13"
@@ -379,7 +369,25 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout12"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout12">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/familybutton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="家庭管理" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout14"
@@ -403,7 +411,25 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout14"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout14">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/cleardatabutton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="清除数据" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout16"
@@ -425,7 +451,25 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout16"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout16">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/dropuserbutton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="账户注销" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout18"
@@ -439,6 +483,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout17"></LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout19"
         android:layout_width="415dp"
         android:layout_height="65dp"
         android:layout_marginBottom="40dp"
@@ -446,6 +491,24 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout18"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout18">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/tuichubutton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="退出登录" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

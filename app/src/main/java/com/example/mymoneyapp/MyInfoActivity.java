@@ -15,7 +15,7 @@ public class MyInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
-
+        //底部导航栏
         BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
@@ -40,5 +40,6 @@ public class MyInfoActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }
