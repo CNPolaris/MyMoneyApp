@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.Data;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AddActivity extends AppCompatActivity {
@@ -41,5 +44,24 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button addbutton=findViewById(R.id.addButton);
+        addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add();
+            }
+        });
+    }
+    public static void add(){
+        new Thread(){
+            public void run(){
+                try{
+                    DBUtil.InsertData("1875091912","life",12,"lunch");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }

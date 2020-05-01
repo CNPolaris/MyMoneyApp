@@ -5,7 +5,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.Data;
+
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -13,7 +18,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 public class DBUtil {
-    private static String IP = "192.168.31.149";
+    //电脑ip地址可能会发生改变，要及时检查
+    private static String IP = "192.168.31.150";
     private static String DBName = "moneyBookDB";
     private static String USER = "sa";
     private static String PWD = "123";
@@ -22,8 +28,6 @@ public class DBUtil {
         Connection con = null;
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            //con=DriverManager.getConnection(url, USER, PWD);
-            //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
             con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";charset=utf-8", USER, PWD);
             System.out.println("连接成功");
         } catch (ClassNotFoundException e) {
@@ -40,17 +44,10 @@ public class DBUtil {
         PreparedStatement pstm = null;
         Connection connection = null;
         Statement stmt=null;
-       // String t="dada";
-       // String s="789";
-        //String sql = "insert into UserInfo(username,password)values('data','789')";
-        //String sql = "insert into UserInfo(username,password)values('"+t+"')"+",'"+"789"+"')";
         String sql = "insert into UserInfo(username,password)values(?,?)";
         try {
             connection = getSQLConnection();
-            //stmt=connection.createStatement();
-            //con=DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";useunicode=true;characterEncoding=UTF-8", USER, PWD);
             pstm = connection.prepareStatement(sql);
-            //stmt.executeUpdate(sql);
             pstm.setString(1,t);
             pstm.setString(2,s);
             pstm.executeUpdate();
@@ -141,9 +138,9 @@ public class DBUtil {
             e.printStackTrace();
         }finally {
             try{
-                connection.close();
-                preparedStatement.close();
                 resultSet.close();
+                preparedStatement.close();
+                connection.close();
                 System.out.println("登陆打开的数据库关闭成功");
             } catch (Exception e) {
                 System.out.println("出错2");
@@ -200,5 +197,54 @@ public class DBUtil {
             return true;
         }
     }
-
+    //往用户收支数据库中添加收支记录
+    public static void InsertData(String username,String type, float amount, String trade){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        PreparedStatement preparedStatement2=null;
+        ResultSet resultSet=null;
+        String ownData= "data"+username;System.out.println(ownData);
+        //String lensql="select max(number) from data1875091912";
+        //String insertsql="insert into data1875091912 (number,types,Amount,tradeNotes,time) values(?,?,?,?,getdate())";
+        //操作指定的表
+        String lensql="select max(number) from "+ownData;
+        String insertsql="insert into "+ownData+ "(number,types,Amount,tradeNotes,time) values(?,?,?,?,getdate())";
+        String lastone="";
+        //连接数据库
+            try {
+            connection=getSQLConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //sql语句执行
+        try{//找到最后面一个记录编号
+            preparedStatement=connection.prepareStatement(lensql);
+            resultSet=preparedStatement.executeQuery();
+            while(resultSet.next()){
+                lastone=String.valueOf(Integer.valueOf(resultSet.getString(1))+1);
+                System.out.println(lastone);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            //开始进行插入操作，收支时间已经写在sql语句中
+            preparedStatement2=connection.prepareStatement(insertsql);
+            preparedStatement2.setString(1,lastone);
+            preparedStatement2.setString(2,type);
+            preparedStatement2.setFloat(3,amount);
+            preparedStatement2.setString(4,trade);
+            preparedStatement2.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            resultSet.close();
+            preparedStatement.close();
+            preparedStatement2.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
