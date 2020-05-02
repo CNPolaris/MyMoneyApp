@@ -5,11 +5,11 @@ import android.app.Application;
 public class Data extends Application {
     private static String username;
     private static String password;
-    Data(){
+    public Data(){
         username="";
         password="";
     }
-    Data(String username,String password){
+    public Data(String username,String password){
         this.username=username;
         this.password=password;
     }

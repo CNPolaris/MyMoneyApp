@@ -67,7 +67,18 @@ public class MyInfoActivity extends AppCompatActivity {
             }
         });
 
+
+        //退出登录
+        Button tuichu=findViewById(R.id.tuichubutton);
+        tuichu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dropOut();
+            }
+        });
     }
+
+
     //账户注销方法
     public static boolean dropowndata(){
         final String username=Data.getUsername();
@@ -84,6 +95,8 @@ public class MyInfoActivity extends AppCompatActivity {
         }.start();
         return success[0];
     }
+
+
     //账户数据清除方法
     public static void clearowndata(){
         final String username=Data.getUsername();
@@ -96,5 +109,14 @@ public class MyInfoActivity extends AppCompatActivity {
                 }
             }
         }.start();
+    }
+
+    //用户退出登录操作
+    public void dropOut(){
+        UserManage.getInstance().saveUserInfo(MyInfoActivity.this,"","");
+        Intent intent=new Intent(MyInfoActivity.this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

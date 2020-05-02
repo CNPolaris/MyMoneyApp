@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,34 +24,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Button confimbutton=findViewById(R.id.ConfirmButton);
-        Button registeredbutton=findViewById(R.id.RegisteredButton);
-
-        /*登录模块*/
-        confimbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUp();
-                Toast.makeText(MainActivity.this,errMsg,Toast.LENGTH_SHORT).show();
-                if(check==true){
-                    Intent intent=new Intent(MainActivity.this,DetailsActivity.class);
+        //先进行一次判断，看是否已经存在登录用户
+        if(UserManage.getInstance().hasUserInfo(this)){
+            Intent intent=new Intent(MainActivity.this,DetailsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }else{
+            Button confimbutton=findViewById(R.id.ConfirmButton);
+            /*登录模块*/
+            confimbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loginUp();
+                    Toast.makeText(MainActivity.this,errMsg,Toast.LENGTH_SHORT).show();
+                    if(check==true){
+                        Intent intent=new Intent(MainActivity.this,DetailsActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
+            /*注册模块*/
+            Button registeredbutton=findViewById(R.id.RegisteredButton);
+            registeredbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*主界面点击注册后跳入注册页面*/
+                    Intent intent=new Intent(MainActivity.this,LoginInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    finish();
                 }
-            }
-        });
-        /*注册模块*/
-        registeredbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*主界面点击注册后跳入注册页面*/
-                Intent intent=new Intent(MainActivity.this,LoginInActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+            });
+        }
     }
+
     /*登录方法*/
     public void loginUp(){
         /*取出*/
@@ -87,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
                                 check=true;
                                 //TextView showUserView=findViewById(R.id.showuser);
                                 //showUserView.setText(username);
-                                Data.setUsername(username);
-                                Data.setPassword(password);
+                                //Data.setUsername(username);
+                                //Data.setPassword(password);
+                                //向usermanage中写入成功登陆的用户信息
+                                UserManage.getInstance().saveUserInfo(MainActivity.this,username,password);
                                 break;
                             case 3:
                                 String passwordErr="密码错误";
