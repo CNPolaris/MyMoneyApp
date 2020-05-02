@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginInActivity">
+    android:focusable="true"
+    android:focusableInTouchMode="false"
 
+    tools:context=".LoginInActivity">
     <Button
         android:id="@+id/loginbutton"
         android:layout_width="wrap_content"

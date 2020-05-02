@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -46,56 +47,55 @@ public class MyInfoActivity extends AppCompatActivity {
         });
         //账户注销事件
         Button dropuser=findViewById(R.id.dropuserbutton);
-        dropuser.setOnClickListener(new View.OnClickListener() {
+        dropuser.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                boolean success=dropowndata();
-                if(success==true){
+            public boolean onTouch(View v, MotionEvent event) {
+                    dropowndata();
                     Toast.makeText(MyInfoActivity.this,"账户注销成功",Toast.LENGTH_SHORT).show();
+                    UserManage.getInstance().saveUserInfo(MyInfoActivity.this,"","");
                     Intent intent=new Intent(MyInfoActivity.this,MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }
+                    return false;
             }
         });
         //账户数据清除事件
         final Button clearuser=findViewById(R.id.cleardatabutton);
-        clearuser.setOnClickListener(new View.OnClickListener() {
+        clearuser.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event)  {
                 clearowndata();
+                return false;
             }
         });
 
 
         //退出登录
         Button tuichu=findViewById(R.id.tuichubutton);
-        tuichu.setOnClickListener(new View.OnClickListener() {
+        tuichu.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event)  {
                 dropOut();
+                return false;
             }
         });
     }
 
 
     //账户注销方法
-    public static boolean dropowndata(){
-        final String username=Data.getUsername();
-        final String password=Data.getPassword();
-        final boolean[] success = new boolean[1];
+    public void dropowndata(){
+        final String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        final String password=UserManage.getInstance().getUserInfo(this).getPassword();
         new Thread(){
             public void run(){
                 try{
-                    success[0] = DBUtil.logout(username, password);
+                    DBUtil.logout(username, password);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.start();
-        return success[0];
     }
-
 
     //账户数据清除方法
     public static void clearowndata(){

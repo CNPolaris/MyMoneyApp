@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Button confimbutton=findViewById(R.id.ConfirmButton);
             /*登录模块*/
-            confimbutton.setOnClickListener(new View.OnClickListener() {
+            confimbutton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onTouch(View v, MotionEvent event) {
                     loginUp();
                     Toast.makeText(MainActivity.this,errMsg,Toast.LENGTH_SHORT).show();
                     if(check==true){
@@ -44,18 +45,20 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
+                    return false;
                 }
             });
             /*注册模块*/
             Button registeredbutton=findViewById(R.id.RegisteredButton);
-            registeredbutton.setOnClickListener(new View.OnClickListener() {
+            registeredbutton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onTouch(View v, MotionEvent event){
                     /*主界面点击注册后跳入注册页面*/
                     Intent intent=new Intent(MainActivity.this,LoginInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
+                    return false;
                 }
             });
         }

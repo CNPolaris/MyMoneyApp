@@ -184,6 +184,7 @@ public class DBUtil {
         String checkSQL = "select * from UserInfo where username=?";
         //当符合条件时，向userinfo表中插入数据
         String insertSQL = "insert into UserInfo(username,password)values(?,?)";
+        //符合注册条件时，为用户创建新的表
         PreparedStatement pstmcheckt = null;
         PreparedStatement pstminsert = null;
         Connection connection = null;
@@ -194,9 +195,27 @@ public class DBUtil {
         }
         else{
             Insert(username,password);
+            creatData(username);
             return true;
         }
     }
+    public static void creatData(String username) throws SQLException {
+        String tablename="data"+username;
+        String tableSql="create table "+tablename+"(number VARCHAR(10) not null PRIMARY key,types VARCHAR(10) not NULL,Amount FLOAT not null,tradeNotes VARCHAR(53),time Datetime)";
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        try {
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(tableSql);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            connection.close();
+        }
+    }
+
     //往用户收支数据库中添加收支记录
     public static void InsertData(String username,String type, float amount, String trade){
         Connection connection=null;
@@ -269,26 +288,18 @@ public class DBUtil {
         }
     }
     //用户注销账户
-    public static boolean logout(String username,String password){
+    public static void logout(String username,String password){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
-        ResultSet resultSet=null;
-        String ownData= "data"+username;System.out.println(ownData);
-        String checkSQL="select * from UserInfo where username=?";
+        String ownData= "data"+username;
         String dropSql="drop table "+ownData;
-        boolean flag=false;
+        String dropuser="delete from UserInfo where username=?";
         try{
             connection=getSQLConnection();
-            preparedStatement=connection.prepareStatement(checkSQL);
-            preparedStatement.setString(1,username);
-            resultSet=preparedStatement.executeQuery();
-            if(resultSet.next()){
-                String pass=resultSet.getString("password");
-                if(pass.equals(password)){
-                    flag=true;
-                }
-            }
             preparedStatement=connection.prepareStatement(dropSql);
+            preparedStatement.executeUpdate();
+            preparedStatement=connection.prepareStatement(dropuser);
+            preparedStatement.setString(1,username);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -299,7 +310,6 @@ public class DBUtil {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return flag;
         }
     }
 }
