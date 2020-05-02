@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.Data;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MyInfoActivity extends AppCompatActivity {
@@ -40,6 +44,57 @@ public class MyInfoActivity extends AppCompatActivity {
                 }
             }
         });
+        //账户注销事件
+        Button dropuser=findViewById(R.id.dropuserbutton);
+        dropuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean success=dropowndata();
+                if(success==true){
+                    Toast.makeText(MyInfoActivity.this,"账户注销成功",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(MyInfoActivity.this,MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
+        });
+        //账户数据清除事件
+        final Button clearuser=findViewById(R.id.cleardatabutton);
+        clearuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearowndata();
+            }
+        });
 
+    }
+    //账户注销方法
+    public static boolean dropowndata(){
+        final String username=Data.getUsername();
+        final String password=Data.getPassword();
+        final boolean[] success = new boolean[1];
+        new Thread(){
+            public void run(){
+                try{
+                    success[0] = DBUtil.logout(username, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+        return success[0];
+    }
+    //账户数据清除方法
+    public static void clearowndata(){
+        final String username=Data.getUsername();
+        new Thread(){
+            public void run(){
+                try{
+                    DBUtil.ClearData(username);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }

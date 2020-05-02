@@ -247,4 +247,59 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
+    //清除用户的收支表的内容
+    public static void ClearData(String username){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        String ownData="data"+username;
+        String clearSql="delete from "+ownData;
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(clearSql);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    //用户注销账户
+    public static boolean logout(String username,String password){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        String ownData= "data"+username;System.out.println(ownData);
+        String checkSQL="select * from UserInfo where username=?";
+        String dropSql="drop table "+ownData;
+        boolean flag=false;
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(checkSQL);
+            preparedStatement.setString(1,username);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                String pass=resultSet.getString("password");
+                if(pass.equals(password)){
+                    flag=true;
+                }
+            }
+            preparedStatement=connection.prepareStatement(dropSql);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return flag;
+        }
+    }
 }
