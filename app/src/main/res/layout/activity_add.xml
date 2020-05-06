@@ -7,6 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="false"
     tools:context=".AddActivity">
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
@@ -22,13 +23,85 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:focusable="true"
-        android:focusableInTouchMode="false"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="342dp" />
+    <TabHost
+        android:id="@+id/addtab"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                //第一个tab布局
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="吃饭" />
+                </LinearLayout>
+                //第二个tab布局
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gongzi"
+                        android:text="工资"
+                        android:drawableTop="@drawable/gongzi"
+                        android:background="@android:color/transparent"
+                        android:src="@style/RedButton"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/licai"
+                        android:text="理财"
+                        android:drawableTop="@drawable/licai"
+                        />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/jianzhi"
+                        android:text="兼职"
+                        android:drawableTop="@drawable/jianzhi"
+                        android:background="@android:color/transparent"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/qitashouru"
+                        android:text="其他收入"
+                        android:drawableTop="@drawable/qitashouru"
+                        android:background="@android:color/transparent"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
