@@ -216,7 +216,7 @@ public class DBUtil {
         }
     }
 
-    //往用户收支数据库中添加收支记录
+    //往用户收支数据库中添加收支记录(用户名，类型，价格，备注)
     public static void InsertData(String username,String type, float amount, String trade){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
@@ -239,10 +239,17 @@ public class DBUtil {
         try{//找到最后面一个记录编号
             preparedStatement=connection.prepareStatement(lensql);
             resultSet=preparedStatement.executeQuery();
-            while(resultSet.next()){
-                lastone=String.valueOf(Integer.valueOf(resultSet.getString(1))+1);
-                System.out.println(lastone);
-            }
+                while(resultSet.next()){
+                    //判断一下是不是已经有序号在表中
+                    String temp=resultSet.getString(1);
+                    if(temp!=null){//有的话加一
+                        lastone=String.valueOf(Integer.valueOf(temp)+1);
+                        System.out.println(lastone);
+                    }
+                    else {//没有的话设为1
+                        lastone="1";
+                    }
+                }
         } catch (SQLException e) {
             e.printStackTrace();
         }

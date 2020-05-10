@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,11 +26,22 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private Button lingshiBt=null,liwuBt=null,lvxingBt=null,meirongBt=null,riyongBt=null;
     private Button tongxunBt=null,shumaBt=null,yanjiuBt=null,yiliaoBt=null,xuexiBt=null;
     private Button yuleBt=null,yundongBt=null,zhufangBt=null,shuiguoBt=null,shejiaoBt=null;
-    //自定义数字键盘上的button
+    //自定义数字键盘上的button等控件
     private Button num0=null,num1=null,num2=null,num3=null,num4=null,num5=null,num6=null,num7=null,num8=null,num9=null,numdot=null;
     private Button numdel=null,numquxiao=null,numqueding=null;
+    private Button numjian=null,numjia=null;
+    private LinearLayout beizhu,numlay;
+    private TextView beizhuText=null;
     //当前所选中的项目
-    public String nowItem="";
+    public String nowItem="";//项目名
+    public TextView moneyTv=null;//当前金额的显示
+    //数字键盘
+    protected String num="0";//整数部分
+    protected String dotNum=".00";//小数部分
+    protected boolean isDot;//判断是否为小数
+    protected final int MAX_NUM = 9999999;    //最大整数
+    protected final int DOT_NUM = 2;          //小数部分最大位数
+    protected int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +146,12 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         numdel=findViewById(R.id.num_del);
         numquxiao=findViewById(R.id.num_quxiao);
         numqueding=findViewById(R.id.num_queding);
+        moneyTv=findViewById(R.id.showmoney);
+        numjian=findViewById(R.id.num_jian);
+        numjia=findViewById(R.id.num_jia);
+        beizhu=findViewById(R.id.beizhulayout);
+        numlay=findViewById(R.id.numLayout);
+        beizhuText=findViewById(R.id.beizhu);
 
         num0.setOnClickListener(this);
         num1.setOnClickListener(this);
@@ -147,6 +166,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         numdel.setOnClickListener(this);
         numquxiao.setOnClickListener(this);
         numqueding.setOnClickListener(this);
+        numjian.setOnClickListener(this);
+        numjia.setOnClickListener(this);
 
     }
 
@@ -236,52 +257,151 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 break;
             //数字键盘的事件重写
             case R.id.num_0:
-
+                calcMoney(0);
                 break;
             case R.id.num_1:
-
+                calcMoney(1);
                 break;
             case R.id.num_2:
-
+                calcMoney(2);
                 break;
             case R.id.num_3:
-
+                calcMoney(3);
                 break;
             case R.id.num_4:
-
+                calcMoney(4);
                 break;
             case R.id.num_5:
-
+                calcMoney(5);
                 break;
             case R.id.num_6:
-
+                calcMoney(6);
                 break;
             case R.id.num_7:
-
+                calcMoney(7);
                 break;
             case R.id.num_8:
-
+                calcMoney(8);
                 break;
             case R.id.num_9:
-
+                calcMoney(9);
                 break;
-            case R.id.num_dot:
-
+            case R.id.num_dot://判断小数
+                if (dotNum.equals(".00")) {
+                    isDot = true;
+                    dotNum = ".";
+                }
+                moneyTv.setText(num + dotNum);
                 break;
-            case R.id.num_del:
-
+            case R.id.num_del://数字删除
+                doDelete();
                 break;
-            case R.id.num_queding:
-
+            case R.id.num_jian://减法
+                Subtraction();
                 break;
-            case R.id.num_quxiao:
-
+            case R.id.num_jia://加法
+                addition(num);
+                break;
+            case R.id.num_queding://确定
+                doCommit();
+                break;
+            case R.id.num_quxiao://取消
+                doClear();
                 break;
 
         }
     }
-    public void add(String msg){
+    //获取当前进行的项目
+    protected void add(String msg){
         nowItem=msg;
+        //显示数字键盘还有备注区
+        setVi();
         System.out.println(nowItem);
+    }
+    //计算金额
+    protected void calcMoney(int money){
+        if (num.equals("0") && money == 0)
+            return;
+        if (isDot) {
+            if (count < DOT_NUM) {
+                count++;
+                dotNum += money;
+                moneyTv.setText(num + dotNum);
+            }
+        } else if (Integer.parseInt(num) < MAX_NUM) {
+            if (num.equals("0"))
+                num = "";
+            num += money;
+            moneyTv.setText(num + dotNum);
+        }
+    }
+    //删除上次输入
+    public void doDelete() {
+        if (isDot) {
+            if (count > 0) {
+                dotNum = dotNum.substring(0, dotNum.length() - 1);
+                count--;
+            }
+            if (count == 0) {
+                isDot = false;
+                dotNum = ".00";
+            }
+            moneyTv.setText(num + dotNum);
+        } else {
+            if (num.length() > 0)
+                num = num.substring(0, num.length() - 1);
+            if (num.length() == 0)
+                num = "0";
+            moneyTv.setText(num + dotNum);
+        }
+    }
+    //设置数字键盘可见
+    protected void setVi(){
+        beizhu.setVisibility(View.VISIBLE);
+        numlay.setVisibility(View.VISIBLE);
+    }
+    //恢复数字键盘不可见
+    protected void setNotVi(){
+        beizhu.setVisibility(View.GONE);
+        numlay.setVisibility(View.GONE);
+    }
+    //清空/取消
+    protected void doClear(){
+        num = "0";
+        count = 0;
+        dotNum = ".00";
+        isDot = false;
+        moneyTv.setText("0.00");
+        beizhuText.setText("");
+        setNotVi();
+    }
+    //向数据库中插入数据
+    protected void insertData(final String username, final String type, final float amount, final String trade){
+        new Thread(){
+            public void run(){
+                try{
+                    DBUtil dbUtil=new DBUtil();
+                    dbUtil.InsertData(username,type,amount,trade);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+    //确认提交-->执行向数据库插入的操作
+    protected void doCommit(){
+        String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        String beizhuString=beizhuText.getText().toString();
+        insertData(username,nowItem,Float.valueOf(num),beizhuString);
+        doClear();
+        setNotVi();
+    }
+    //加法
+    protected void addition(String money){
+        int tempMoney=Integer.valueOf(money);
+    }
+    //减法
+    protected void Subtraction(){
+
     }
 }

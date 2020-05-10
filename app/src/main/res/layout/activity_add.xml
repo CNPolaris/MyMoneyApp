@@ -281,10 +281,11 @@
 
     <LinearLayout
         android:id="@+id/beizhulayout"
+        android:visibility="gone"
         android:layout_width="406dp"
         android:layout_height="36dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintBottom_toTopOf="@+id/numLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -302,7 +303,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="278dp"
+            android:layout_width="268dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -312,7 +313,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="点击填写备注"
+                android:text=""
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -331,7 +332,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/numLayout"
+        android:visibility="gone"
         android:layout_width="410dp"
         android:layout_height="190dp"
         android:orientation="horizontal"
@@ -531,6 +533,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorAccent"
                 android:drawableBottom="@drawable/shanchu"
+                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:onClick="onClick"
                 android:textColor="#000000"
@@ -541,6 +544,36 @@
             android:layout_width="104dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/num_jia"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?attr/colorAccent"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="+"
+                android:textSize="20sp" />
+
+            <View
+                style="@style/horizontal_decoration_style"
+                android:background="#8c8c8c" />
+            <Button
+                android:id="@+id/num_jian"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?attr/colorAccent"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="-"
+                android:textSize="20sp" />
+
+            <View
+                style="@style/horizontal_decoration_style"
+                android:background="#8c8c8c" />
 
             <Button
                 android:id="@+id/num_quxiao"
@@ -556,7 +589,6 @@
             <View
                 style="@style/horizontal_decoration_style"
                 android:background="#8c8c8c" />
-
             <Button
                 android:id="@+id/num_queding"
                 android:layout_width="match_parent"
