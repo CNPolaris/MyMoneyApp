@@ -12,91 +12,266 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:focusable="true"
         android:background="?android:attr/windowBackground"
+        android:focusable="true"
         android:focusableInTouchMode="false"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <TabHost
         android:id="@+id/addtab"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        android:layout_height="410dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TabWidget
                 android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="410dp"
+                android:layout_height="49dp"
                 android:background="@color/colorAccent" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="357dp">
                 //第一个tab布局
 
                 <LinearLayout
                     android:id="@+id/tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="410dp"
+                    android:layout_height="410dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+
+                    <LinearLayout
+                        android:layout_width="410dp"
                         android:layout_height="wrap_content"
-                        android:text="吃饭" />
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/fushi"
+                            android:layout_width="82dp"
+                            android:layout_height="match_parent"
+                            android:drawableTop="@drawable/fushi"
+                            android:text="服饰" />
+
+                        <Button
+                            android:id="@+id/canyin"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/canyin"
+                            android:text="餐饮" />
+
+                        <Button
+                            android:id="@+id/gouwu"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/gouwu"
+                            android:text="购物" />
+
+                        <Button
+                            android:id="@+id/jiaotong"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/jiaotong"
+                            android:text="交通" />
+
+                        <Button
+                            android:id="@+id/jujia"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/jujia"
+                            android:text="居家" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="410dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/lingshi"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/lingshi"
+                            android:text="零食" />
+
+                        <Button
+                            android:id="@+id/liwu"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/liwu"
+                            android:text="礼物" />
+
+                        <Button
+                            android:id="@+id/lvxing"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/lvxing"
+                            android:text="旅行" />
+
+                        <Button
+                            android:id="@+id/meirong"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/meirong"
+                            android:text="美容" />
+
+                        <Button
+                            android:id="@+id/riyong"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/riyong"
+                            android:text="日用品" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="410dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/tongxun"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/tongxun"
+                            android:text="通讯" />
+
+                        <Button
+                            android:id="@+id/shuma"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/shuma"
+                            android:text="数码" />
+
+                        <Button
+                            android:id="@+id/yanjiu"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/yanjiu"
+                            android:text="烟酒" />
+
+                        <Button
+                            android:id="@+id/yiliao"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/yiliao"
+                            android:text="医疗" />
+
+                        <Button
+                            android:id="@+id/xuexi"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/xuexi"
+                            android:text="学习" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="410dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/yule"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/yule"
+                            android:text="娱乐" />
+
+                        <Button
+                            android:id="@+id/yundong"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/yundong"
+                            android:text="运动" />
+
+                        <Button
+                            android:id="@+id/zhufang"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/zhufang"
+                            android:text="住房" />
+
+                        <Button
+                            android:id="@+id/shuiguo"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/shuiguo"
+                            android:text="水果" />
+
+                        <Button
+                            android:id="@+id/shejiao"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/shejiao"
+                            android:text="社交" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
                 //第二个tab布局
 
                 <LinearLayout
                     android:id="@+id/tab2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="410dp"
+                    android:layout_height="410dp"
                     android:orientation="vertical">
 
-                    <Button
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="410dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gongzi"
-                        android:text="工资"
-                        android:drawableTop="@drawable/gongzi"
-                        android:background="@android:color/transparent"
-                        android:src="@style/RedButton"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/licai"
-                        android:text="理财"
-                        android:drawableTop="@drawable/licai"
-                        />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/jianzhi"
-                        android:text="兼职"
-                        android:drawableTop="@drawable/jianzhi"
-                        android:background="@android:color/transparent"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/qitashouru"
-                        android:text="其他收入"
-                        android:drawableTop="@drawable/qitashouru"
-                        android:background="@android:color/transparent"/>
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/gongzi"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/gongzi"
+                            android:src="@style/RedButton"
+                            android:text="工资" />
+
+                        <Button
+                            android:id="@+id/licai"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/licai"
+                            android:text="理财" />
+
+                        <Button
+                            android:id="@+id/jianzhi"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/jianzhi"
+                            android:text="兼职" />
+
+                        <Button
+                            android:id="@+id/qitashouru"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/qitashouru"
+                            android:text="其他收入" />
+
+                        <Button
+                            android:id="@+id/lijin"
+                            android:layout_width="82dp"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/lijin"
+                            android:text="lijin" />
+                    </LinearLayout>
 
                 </LinearLayout>
 

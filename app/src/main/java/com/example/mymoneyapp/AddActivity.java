@@ -8,11 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TabHost;
 
 import com.Data;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.*;
 
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
     //这是支出页面的button
@@ -20,6 +24,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private Button jianzhiBt=null;
     private Button licaiBt=null;
     private Button qitashouruBt=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("收入",getResources().getDrawable(R.drawable.ic_launcher_background)).setContent(R.id.tab1));
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("支出",null).setContent(R.id.tab2));
 
+        //zhicuhSpinner.setOnItemLongClickListener();
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
@@ -70,8 +76,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view){
         switch (view.getId()){
             case R.id.gongzi:
-                System.out.println("这是工资");
+                //System.out.println("这是工资");
                 add((String) gongziBt.getText());
+                System.out.println(gongziBt.getText());
                 break;
             case R.id.licai:
                 System.out.println("这是理财");
