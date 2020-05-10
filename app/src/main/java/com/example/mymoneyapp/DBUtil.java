@@ -201,7 +201,7 @@ public class DBUtil {
     }
     public static void creatData(String username) throws SQLException {
         String tablename="data"+username;
-        String tableSql="create table "+tablename+"(number VARCHAR(10) not null PRIMARY key,types VARCHAR(10) not NULL,Amount FLOAT not null,tradeNotes VARCHAR(53),time Datetime)";
+        String tableSql="create table "+tablename+"(number VARCHAR(10) not null PRIMARY key,revenue VARCHAR(10) not NULL,types VARCHAR(10) not NULL,Amount FLOAT not null,tradeNotes VARCHAR(53),time Datetime)";
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         try {
@@ -216,8 +216,8 @@ public class DBUtil {
         }
     }
 
-    //往用户收支数据库中添加收支记录(用户名，类型，价格，备注)
-    public static void InsertData(String username,String type, float amount, String trade){
+    //往用户收支数据库中添加收支记录(用户名，收支类型,具体分类，价格，备注)
+    public static void InsertData(String username,String revenues,String type, float amount, String trade){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         PreparedStatement preparedStatement2=null;
@@ -227,7 +227,7 @@ public class DBUtil {
         //String insertsql="insert into data1875091912 (number,types,Amount,tradeNotes,time) values(?,?,?,?,getdate())";
         //操作指定的表
         String lensql="select max(number) from "+ownData;
-        String insertsql="insert into "+ownData+ "(number,types,Amount,tradeNotes,time) values(?,?,?,?,getdate())";
+        String insertsql="insert into "+ownData+ "(number,revenue,types,Amount,tradeNotes,time) values(?,?,?,?,?,getdate())";
         String lastone="";
         //连接数据库
             try {
@@ -257,9 +257,10 @@ public class DBUtil {
             //开始进行插入操作，收支时间已经写在sql语句中
             preparedStatement2=connection.prepareStatement(insertsql);
             preparedStatement2.setString(1,lastone);
-            preparedStatement2.setString(2,type);
-            preparedStatement2.setFloat(3,amount);
-            preparedStatement2.setString(4,trade);
+            preparedStatement2.setString(2,revenues);
+            preparedStatement2.setString(3,type);
+            preparedStatement2.setFloat(4,amount);
+            preparedStatement2.setString(5,trade);
             preparedStatement2.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

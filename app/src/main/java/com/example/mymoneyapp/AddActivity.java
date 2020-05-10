@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
+    public String shouruString="收入";
+    public String zhichuString="支出";
+    private int zhiORshou=0;//标记收入或支出
     //这是支出页面的button
     private Button gongziBt=null;
     private Button jianzhiBt=null;
@@ -177,83 +180,83 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             //收入事件
             case R.id.gongzi:
                 //System.out.println("这是工资");
-                add(gongziBt.getText().toString());
+                getItemName_shouru(gongziBt.getText().toString());
                 System.out.println(gongziBt.getText());
                 break;
             case R.id.licai:
-                add(licaiBt.getText().toString());
+                getItemName_shouru(licaiBt.getText().toString());
                 System.out.println("这是理财");
                 break;
             case R.id.jianzhi:
-                add(jianzhiBt.getText().toString());
+                getItemName_shouru(jianzhiBt.getText().toString());
                 System.out.println("这是兼职");
                 break;
             case R.id.qitashouru:
-                add(qitashouruBt.getText().toString());
+                getItemName_shouru(qitashouruBt.getText().toString());
                 System.out.println("这是其他收入");
             case R.id.lijin:
-                add(lijinBt.getText().toString());
+                getItemName_shouru(lijinBt.getText().toString());
                 break;
             //支出事件
             case R.id.fushi:
-                add(fushiBt.getText().toString());
+                getItemName_zhichu(fushiBt.getText().toString());
                 break;
             case R.id.canyin:
-                add(canyinBt.getText().toString());
+                getItemName_zhichu(canyinBt.getText().toString());
                 break;
             case R.id.gouwu:
-                add(gouwuBt.getText().toString());
+                getItemName_zhichu(gouwuBt.getText().toString());
                 break;
             case R.id.jiaotong:
-                add(jiaotongBt.getText().toString());
+                getItemName_zhichu(jiaotongBt.getText().toString());
                 break;
             case R.id.jujia:
-                add(jujiaBt.getText().toString());
+                getItemName_zhichu(jujiaBt.getText().toString());
                 break;
             case R.id.lingshi:
-                add(lingshiBt.getText().toString());
+                getItemName_zhichu(lingshiBt.getText().toString());
                 break;
             case R.id.liwu:
-                add(liwuBt.getText().toString());
+                getItemName_zhichu(liwuBt.getText().toString());
                 break;
             case R.id.lvxing:
-                add(lvxingBt.getText().toString());
+                getItemName_zhichu(lvxingBt.getText().toString());
                 break;
             case R.id.meirong:
-                add(meirongBt.getText().toString());
+                getItemName_zhichu(meirongBt.getText().toString());
                 break;
             case R.id.riyong:
-                add(riyongBt.getText().toString());
+                getItemName_zhichu(riyongBt.getText().toString());
                 break;
             case R.id.tongxun:
-                add(tongxunBt.getText().toString());
+                getItemName_zhichu(tongxunBt.getText().toString());
                 break;
             case R.id.shuma:
-                add(shumaBt.getText().toString());
+                getItemName_zhichu(shumaBt.getText().toString());
                 break;
             case R.id.yanjiu:
-                add(yanjiuBt.getText().toString());
+                getItemName_zhichu(yanjiuBt.getText().toString());
                 break;
             case R.id.yiliao:
-                add(yiliaoBt.getText().toString());
+                getItemName_zhichu(yiliaoBt.getText().toString());
                 break;
             case R.id.xuexi:
-                add(xuexiBt.getText().toString());
+                getItemName_zhichu(xuexiBt.getText().toString());
                 break;
             case R.id.yule:
-                add(yuleBt.getText().toString());
+                getItemName_zhichu(yuleBt.getText().toString());
                 break;
             case R.id.yundong:
-                add(yundongBt.getText().toString());
+                getItemName_zhichu(yundongBt.getText().toString());
                 break;
             case R.id.zhufang:
-                add(zhufangBt.getText().toString());
+                getItemName_zhichu(zhufangBt.getText().toString());
                 break;
             case R.id.shuiguo:
-                add(shuiguoBt.getText().toString());
+                getItemName_zhichu(shuiguoBt.getText().toString());
                 break;
             case R.id.shejiao:
-                add(shejiaoBt.getText().toString());
+                getItemName_zhichu(shejiaoBt.getText().toString());
                 break;
             //数字键盘的事件重写
             case R.id.num_0:
@@ -312,8 +315,16 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
     //获取当前进行的项目
-    protected void add(String msg){
+    protected void getItemName_zhichu(String msg){
         nowItem=msg;
+        zhiORshou=-1;
+        //显示数字键盘还有备注区
+        setVi();
+        System.out.println(nowItem);
+    }
+    protected void getItemName_shouru(String msg){
+        nowItem=msg;
+        zhiORshou=0;
         //显示数字键盘还有备注区
         setVi();
         System.out.println(nowItem);
@@ -376,23 +387,39 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         setNotVi();
     }
     //向数据库中插入数据
-    protected void insertData(final String username, final String type, final float amount, final String trade){
+    protected void insertData(final String username, final String zhi,final String type, final float amount, final String trade){
         new Thread(){
             public void run(){
                 try{
                     DBUtil dbUtil=new DBUtil();
-                    dbUtil.InsertData(username,type,amount,trade);
+                    dbUtil.InsertData(username,zhi,type,amount,trade);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.start();
     }
-    //确认提交-->执行向数据库插入的操作
     protected void doCommit(){
+        if(zhiORshou==0){//执行收入操作
+            doCommitshouru();
+        }
+        else if(zhiORshou==-1){//执行支出操作
+            doCommitzhichu();
+        }
+    }
+    //确认提交-->执行向数据库插入支出的操作
+    protected void doCommitzhichu(){
         String username=UserManage.getInstance().getUserInfo(this).getUsername();
         String beizhuString=beizhuText.getText().toString();
-        insertData(username,nowItem,Float.valueOf(num),beizhuString);
+        insertData(username,zhichuString,nowItem,0-Float.valueOf(num),beizhuString);
+        doClear();
+        setNotVi();
+    }
+    //确认提交-->执行向数据库插入收入的操作
+    protected void doCommitshouru(){
+        String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        String beizhuString=beizhuText.getText().toString();
+        insertData(username,zhichuString,nowItem,Float.valueOf(num),beizhuString);
         doClear();
         setNotVi();
     }
