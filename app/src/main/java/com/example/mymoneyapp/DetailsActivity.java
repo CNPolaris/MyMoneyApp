@@ -48,7 +48,6 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
-        Button timeButton=findViewById(R.id.timebutton);
     }
 }
 
