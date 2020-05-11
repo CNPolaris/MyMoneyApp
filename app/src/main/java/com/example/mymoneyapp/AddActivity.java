@@ -56,14 +56,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("支出",null).setContent(R.id.tab2));
 
         //zhicuhSpinner.setOnItemLongClickListener();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_mingxi:
                         Intent intent1 = new Intent(AddActivity.this, DetailsActivity.class);
-
                         startActivity(intent1);
                         break;
                     case R.id.navigation_tubiao:

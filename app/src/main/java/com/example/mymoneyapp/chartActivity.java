@@ -16,7 +16,7 @@ public class chartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
+        final BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {

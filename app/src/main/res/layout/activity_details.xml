@@ -7,26 +7,28 @@
     android:focusableInTouchMode="false"
     android:layout_height="match_parent"
     tools:context=".DetailsActivity">
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         android:focusableInTouchMode="false"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="409dp"
         android:layout_height="100dp"
         android:layout_marginBottom="575dp"
-        android:orientation="vertical"
         android:background="@drawable/badge_dialog_bg_b"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +74,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
             </LinearLayout>
 
 
@@ -142,5 +144,16 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="573dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"></LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

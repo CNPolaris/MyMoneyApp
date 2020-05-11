@@ -21,7 +21,7 @@ public class MyInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         //底部导航栏
-        BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
+        final BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
