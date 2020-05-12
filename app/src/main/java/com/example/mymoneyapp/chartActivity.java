@@ -29,6 +29,7 @@ public class chartActivity extends AppCompatActivity {
                         Intent intent2=new Intent(chartActivity.this,chartActivity.class);
                         startActivity(intent2);
                         break;
+
                     case R.id.navigation_wode:
                         Intent intent3=new Intent(chartActivity.this,MyInfoActivity.class);
                         startActivity(intent3);

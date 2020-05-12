@@ -72,9 +72,17 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -97,6 +105,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_shouru"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -129,6 +138,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_zhichu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
