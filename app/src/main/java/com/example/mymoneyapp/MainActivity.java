@@ -21,6 +21,7 @@ import java.sql.SQLException;
 public class MainActivity extends AppCompatActivity {
     private static String errMsg="";
     private static boolean check=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

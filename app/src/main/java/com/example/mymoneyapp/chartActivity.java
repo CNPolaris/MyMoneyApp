@@ -23,10 +23,12 @@ public class chartActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.navigation_mingxi:
                         Intent intent1=new Intent(chartActivity.this,DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_tubiao:
                         Intent intent2=new Intent(chartActivity.this,chartActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent2);
                         break;
 

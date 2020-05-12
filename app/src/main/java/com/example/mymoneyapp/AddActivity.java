@@ -63,6 +63,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 switch (item.getItemId()) {
                     case R.id.navigation_mingxi:
                         Intent intent1 = new Intent(AddActivity.this, DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_tubiao:
@@ -75,6 +76,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         break;
                     case R.id.navigation_jizhang:
                         Intent intent4 = new Intent(AddActivity.this, AddActivity.class);
+                        intent4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent4);
                         break;
                 }

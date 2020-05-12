@@ -1,6 +1,7 @@
 package com.example.mymoneyapp;
 import android.app.Dialog;
 import android.provider.ContactsContract;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +25,10 @@ public class DBUtil {
     private static String USER = "sa";
     private static String PWD = "123";
 
+    public static float zhichu=0;
+    public static float shouru=0;
+    public static float monthzhichu=0;
+    public static float monthshouru=0;
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
         try {
@@ -274,13 +279,26 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
+
     //从数据库中查询收支数据
     public static void inquireData(String username,String date){
         Connection connection=null;
         ResultSet resultSet=null;
         Statement statement=null;
+        ResultSet resultSetzhi=null,resultSetmonthzhi=null;
+        Statement statementzhi=null,statementmonthzhi=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSetshou=null,resultSetmonthshou=null;
+        Statement statementshou = null,statementmonthshou=null;
         String userdata="data"+username;
         String dateSQL="select * from "+userdata+" where CONVERT(VARCHAR,time,120)like '%"+date+"%'";
+        //更新userInfo表中的收支信息
+        String insertDataSQL="UPDATE UserInfo set income=? ,expend=? ,balance=? where username='"+username+"'";
+        String zhichuSQL="select SUM(Amount) FROM "+userdata+" where Amount<=0";//查询所有的支出
+        String shouruSQL="select SUM(Amount) FROM "+userdata+" where Amount>=0";//查询所有的收入
+        //按照月份查询收入、支出金额
+        String monthZhiChuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        String monthShouRuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
         try{
             connection=getSQLConnection();
             statement=connection.createStatement();
@@ -289,14 +307,51 @@ public class DBUtil {
                 String bei=resultSet.getString("Amount");
                 System.out.println(bei);
             }
-
+            //统计收入和支出
+            statementshou=connection.createStatement();
+            resultSetshou=statementshou.executeQuery(shouruSQL);
+            statementzhi=connection.createStatement();
+            resultSetzhi=statementzhi.executeQuery(zhichuSQL);
+            if(resultSetshou.next()&&resultSetzhi.next()){
+                zhichu=resultSetzhi.getFloat(1);
+                shouru=resultSetshou.getFloat(1);
+            }else{
+                zhichu=0;
+                shouru=0;
+            }
+            //更新收支
+            preparedStatement=connection.prepareStatement(insertDataSQL);
+            preparedStatement.setFloat(1,shouru);
+            preparedStatement.setFloat(2,zhichu);
+            preparedStatement.setFloat(3,shouru+zhichu);
+            preparedStatement.executeUpdate();
+            //按月查询收支的结果显示
+            //支出
+            statementmonthzhi=connection.createStatement();
+            resultSetmonthzhi=statementmonthzhi.executeQuery(monthZhiChuSQl);
+            //收入
+            statementmonthshou=connection.createStatement();
+            resultSetmonthshou=statementmonthshou.executeQuery(monthShouRuSQl);
+            if(resultSetmonthzhi.next()&&resultSetmonthshou.next()){
+                monthzhichu=resultSetmonthzhi.getFloat(1);
+                monthshouru=resultSetmonthshou.getFloat(1);
+            }else{
+                monthzhichu=0;
+                monthshouru=0;
+            }
+            System.out.println("日收入"+monthshouru);
+            System.out.println("日支出"+monthzhichu);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             try{
-                connection.close();
-                statement.close();
                 resultSet.close();
+                statement.close();
+                resultSetzhi.close();
+                statementzhi.close();
+
+                preparedStatement.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

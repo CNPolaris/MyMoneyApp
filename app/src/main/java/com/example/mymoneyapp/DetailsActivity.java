@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Data;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.BreakIterator;
@@ -31,11 +32,28 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private int year,month,day;
     private StringBuffer date;
     private Context context;
+    //账单信息的实现显示
+    private TextView tvzhichu;
+    private TextView tvshouru;
+
+    @Override
+    protected void onStart() {
+        super.onStart();updateBill();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();updateBill();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         context=this;
+        tvshouru=findViewById(R.id.showshouru);
+        tvzhichu=findViewById(R.id.showzhichu);
+
         //底部导航栏
         final BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -44,10 +62,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 switch (item.getItemId()){
                     case R.id.navigation_mingxi:
                         Intent intent1=new Intent(DetailsActivity.this,DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_tubiao:
                         Intent intent2=new Intent(DetailsActivity.this,chartActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent2);
                         break;
                     case R.id.navigation_wode:
@@ -65,9 +85,18 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         date=new StringBuffer();
         initView();
         initDatetime();
-
         //数据库查询结果的显示
         inquire();
+        updateBill();
+    }
+    /*
+    *更新账单
+    */
+    public void updateBill(){
+        StringBuffer z=new StringBuffer();
+        StringBuffer s=new StringBuffer();
+        tvzhichu.setText(z.append(DBUtil.monthzhichu));
+        tvshouru.setText(s.append(DBUtil.monthshouru));
     }
     /*
     *查询结果的显示
@@ -86,6 +115,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         }.start();
+        updateBill();
     }
 
     /*
@@ -139,25 +169,27 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                         }else {newday=String.valueOf(day);}
                         tvDate.setText(date.append((year)).append("-").append(newmonth).append("-").append(newday));
                         //tvDate.setText(date.append(String.valueOf(year)).append("-").append(String.valueOf(month+1)).append("-").append(day));
+                        inquire();//每次更改时间后都会触发
+                        updateBill();
                         dialog.dismiss();
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        inquire();//每次更改时间后都会触发
+                        updateBill();
                         dialog.dismiss();
                     }
                 });
                 final AlertDialog dialog=builder.create();
                 View dialogView=View.inflate(context,R.layout.dialog_date,null);
                 final DatePicker datePicker=dialogView.findViewById(R.id.datePicker);
-
                 dialog.setTitle("设置日期");
                 dialog.setView(dialogView);
                 dialog.show();
                 //初始化日期监听事件
                 datePicker.init(year,month,day,this);
-                inquire();
                 break;
         }
     }

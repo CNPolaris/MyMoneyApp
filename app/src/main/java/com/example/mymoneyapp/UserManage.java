@@ -25,6 +25,14 @@ public class UserManage {
         editor.putString("PASSWORD",password);
         editor.commit();
     }
+    //保存财产
+    public void saveUserproperty(Context context,float zhichu,float shouru){
+        SharedPreferences sp =context.getSharedPreferences("Data", Context.MODE_PRIVATE);//Context.MODE_PRIVATE表示SharePrefences的数据只有自己应用程序能访问。
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putFloat("ZHICHU",zhichu);
+        editor.putFloat("SHOURU",shouru);
+        editor.commit();
+    }
     public Data getUserInfo(Context context){
         SharedPreferences sp=context.getSharedPreferences("Data",Context.MODE_PRIVATE);
         Data userInfo=new Data();

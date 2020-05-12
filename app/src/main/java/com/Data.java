@@ -13,7 +13,6 @@ public class Data extends Application {
         this.username=username;
         this.password=password;
     }
-
     public static void setUsername(String username) {
         Data.username = username;
     }

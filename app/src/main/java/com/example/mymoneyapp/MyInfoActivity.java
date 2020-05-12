@@ -28,6 +28,7 @@ public class MyInfoActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.navigation_mingxi:
                         Intent intent1=new Intent(MyInfoActivity.this,DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_tubiao:
@@ -36,6 +37,7 @@ public class MyInfoActivity extends AppCompatActivity {
                         break;
                     case R.id.navigation_wode:
                         Intent intent3=new Intent(MyInfoActivity.this,MyInfoActivity.class);
+                        intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent3);
                         break;
                     case R.id.navigation_jizhang:
