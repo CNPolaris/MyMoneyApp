@@ -274,6 +274,26 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
+    //从数据库中查询收支数据
+    public static void inquireData(String username,String date){
+        Connection connection=null;
+        ResultSet resultSet=null;
+        PreparedStatement preparedStatement=null;
+        String userdata="data"+username;
+        String dateSQL="select * from "+userdata+" where CONVERT(VARCHAR,time,120)like '2020-05%'";
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(dateSQL);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                while (resultSet.next()){
+                    System.out.println(resultSet.getString("number"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     //清除用户的收支表的内容
     public static void ClearData(String username){
         Connection connection=null;
