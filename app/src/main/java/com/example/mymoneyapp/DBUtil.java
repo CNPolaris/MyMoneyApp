@@ -230,7 +230,7 @@ public class DBUtil {
         String insertsql="insert into "+ownData+ "(number,revenue,types,Amount,tradeNotes,time) values(?,?,?,?,?,getdate())";
         String lastone="";
         //连接数据库
-            try {
+        try {
             connection=getSQLConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -278,20 +278,28 @@ public class DBUtil {
     public static void inquireData(String username,String date){
         Connection connection=null;
         ResultSet resultSet=null;
-        PreparedStatement preparedStatement=null;
+        Statement statement=null;
         String userdata="data"+username;
-        String dateSQL="select * from "+userdata+" where CONVERT(VARCHAR,time,120)like '2020-05%'";
+        String dateSQL="select * from "+userdata+" where CONVERT(VARCHAR,time,120)like '%"+date+"%'";
         try{
             connection=getSQLConnection();
-            preparedStatement=connection.prepareStatement(dateSQL);
-            resultSet=preparedStatement.executeQuery();
-            if(resultSet.next()){
-                while (resultSet.next()){
-                    System.out.println(resultSet.getString("number"));
-                }
+            statement=connection.createStatement();
+            resultSet=statement.executeQuery(dateSQL);
+            while (resultSet.next()){
+                String bei=resultSet.getString("Amount");
+                System.out.println(bei);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try{
+                connection.close();
+                statement.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     //清除用户的收支表的内容

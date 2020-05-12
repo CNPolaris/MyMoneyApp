@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.BreakIterator;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,8 +72,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     /*
     *查询结果的显示
     */
-    private void inquire(){
+    private void inquire() {
         final String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        //final String date=tvDate.getText().toString();
+        System.out.println(date);
         new Thread(){
             public void run(){
                 DBUtil dbUtil=new DBUtil();
@@ -94,11 +97,19 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         llDate.setOnClickListener(this);
     }
     private void initDatetime(){
+        String newmonth = "";
+        String newday="";
         Calendar calendar=Calendar.getInstance();
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH)+1;
         day=calendar.get(Calendar.DAY_OF_MONTH);
-        tvDate.setText(date.append((year)).append("-").append(month).append("-").append(day));
+        if(month<10){
+            newmonth="0"+String.valueOf(month);
+        }else{newmonth=String.valueOf(month);}
+        if(day<10){
+            newday="0"+String.valueOf(day);
+        }else {newday=String.valueOf(day);}
+        tvDate.setText(date.append((year)).append("-").append(newmonth).append("-").append(newday));
     }
 
     @Override
@@ -118,7 +129,16 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                         if(date.length()>0){//如果还有时间，就清除上次记录的日期
                             date.delete(0,date.length());
                         }
-                        tvDate.setText(date.append(String.valueOf(year)).append("-").append(String.valueOf(month+1)).append("-").append(day));
+                        String newmonth="";
+                        if(month+1<10){
+                            newmonth="0"+String.valueOf(month+1);
+                        }else{newmonth=String.valueOf(month+1);}
+                        String newday="";
+                        if(day<10){
+                            newday="0"+String.valueOf(day);
+                        }else {newday=String.valueOf(day);}
+                        tvDate.setText(date.append((year)).append("-").append(newmonth).append("-").append(newday));
+                        //tvDate.setText(date.append(String.valueOf(year)).append("-").append(String.valueOf(month+1)).append("-").append(day));
                         dialog.dismiss();
                     }
                 });
@@ -137,6 +157,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 dialog.show();
                 //初始化日期监听事件
                 datePicker.init(year,month,day,this);
+                inquire();
                 break;
         }
     }
