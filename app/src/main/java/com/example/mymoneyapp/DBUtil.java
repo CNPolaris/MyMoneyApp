@@ -284,10 +284,11 @@ public class DBUtil {
     }
 
     //从数据库中查询收支数据
-    public static void inquireData(String username,String date){
+    public static List<GetData> inquireData(String username,String date){
         Connection connection=null;
         ResultSet resultSet=null;
         Statement statement=null;
+        List<GetData> list = null;
         ResultSet resultSetzhi=null,resultSetmonthzhi=null;
         Statement statementzhi=null,statementmonthzhi=null;
         PreparedStatement preparedStatement=null;
@@ -306,14 +307,11 @@ public class DBUtil {
             connection=getSQLConnection();
             statement=connection.createStatement();
             resultSet=statement.executeQuery(dateSQL);
-            List<GetData>list=new ArrayList<GetData>();
+            list=new ArrayList<GetData>();
             while (resultSet.next()){
                 /*String bei=resultSet.getString("Amount");
                 System.out.println(bei);*/
                 list.add(new GetData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getString(5),resultSet.getDate(6)));
-            }
-            for(GetData s:list){
-                System.out.println(s);
             }
             //统计收入和支出
             statementshou=connection.createStatement();
@@ -349,6 +347,7 @@ public class DBUtil {
             }
             System.out.println("日收入"+monthshouru);
             System.out.println("日支出"+monthzhichu);
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -357,13 +356,13 @@ public class DBUtil {
                 statement.close();
                 resultSetzhi.close();
                 statementzhi.close();
-
                 preparedStatement.close();
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        return list;
     }
     //清除用户的收支表的内容
     public static void ClearData(String username){

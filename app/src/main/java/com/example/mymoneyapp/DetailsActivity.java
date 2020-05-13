@@ -4,16 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -23,8 +27,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.BreakIterator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 //这是关于账单信息的
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener,DatePicker.OnDateChangedListener {
@@ -37,7 +43,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     //账单信息的实现显示
     private TextView tvzhichu;
     private TextView tvshouru;
-    private ScrollView scrollView;
+    private ListView listView;
+    private static List<GetData>dataList=new ArrayList<GetData>();
     @Override
     protected void onStart() {
         super.onStart();updateBill();
@@ -56,22 +63,11 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         tvshouru=findViewById(R.id.showshouru);
         tvzhichu=findViewById(R.id.showzhichu);
 
-        scrollView=findViewById(R.id.tv_data1);
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_UP:
-                        break;
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        System.out.println("滑动");
-                        break;
-                }
-                return false;
-            }
-        });
+        listView=findViewById(R.id.datashow);
+        //ArrayAdapter<GetData>arrayAdapter=new ArrayAdapter<GetData>(this,R.layout.data_line,dataList);
+        //listView.setAdapter(arrayAdapter);
+
+
         //底部导航栏
         final BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -106,6 +102,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         //数据库查询结果的显示
         inquire();
         updateBill();
+        System.out.println("主"+dataList);
     }
     /*
     *更新账单
@@ -115,6 +112,11 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         StringBuffer s=new StringBuffer();
         tvzhichu.setText(z.append(DBUtil.monthzhichu));
         tvshouru.setText(s.append(DBUtil.monthshouru));
+        ArrayAdapter<GetData> adapter = new ArrayAdapter<GetData>(
+                DetailsActivity.this,   // Context上下文
+                android.R.layout.simple_list_item_1,  // 子项布局id
+                dataList);                                // 数据
+        listView.setAdapter(adapter);
     }
     /*
     *查询结果的显示
@@ -127,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             public void run(){
                 DBUtil dbUtil=new DBUtil();
                 try{
-                    dbUtil.inquireData(username,tvDate.getText().toString());
+                    dataList=dbUtil.inquireData(username,tvDate.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -208,6 +210,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 dialog.show();
                 //初始化日期监听事件
                 datePicker.init(year,month,day,this);
+                inquire();//每次更改时间后都会触发
+                updateBill();
                 break;
         }
     }
