@@ -420,7 +420,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     protected void doCommitshouru(){
         String username=UserManage.getInstance().getUserInfo(this).getUsername();
         String beizhuString=beizhuText.getText().toString();
-        insertData(username,zhichuString,nowItem,Float.valueOf(num),beizhuString);
+        insertData(username,shouruString,nowItem,Float.valueOf(num),beizhuString);
         doClear();
         setNotVi();
     }

@@ -9,10 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.Data;
@@ -35,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     //账单信息的实现显示
     private TextView tvzhichu;
     private TextView tvshouru;
-
+    private ScrollView scrollView;
     @Override
     protected void onStart() {
         super.onStart();updateBill();
@@ -54,6 +56,22 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         tvshouru=findViewById(R.id.showshouru);
         tvzhichu=findViewById(R.id.showzhichu);
 
+        scrollView=findViewById(R.id.tv_data1);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        System.out.println("滑动");
+                        break;
+                }
+                return false;
+            }
+        });
         //底部导航栏
         final BottomNavigationView bottomNavigationView=findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {

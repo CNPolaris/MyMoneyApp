@@ -18,6 +18,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBUtil {
     //电脑ip地址可能会发生改变，要及时检查
     private static String IP = "192.168.31.150";
@@ -33,7 +36,7 @@ public class DBUtil {
         Connection con = null;
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";charset=utf-8", USER, PWD);
+            con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DBName + ";characterEncoding=GBK", USER, PWD);
             System.out.println("连接成功");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -303,9 +306,14 @@ public class DBUtil {
             connection=getSQLConnection();
             statement=connection.createStatement();
             resultSet=statement.executeQuery(dateSQL);
+            List<GetData>list=new ArrayList<GetData>();
             while (resultSet.next()){
-                String bei=resultSet.getString("Amount");
-                System.out.println(bei);
+                /*String bei=resultSet.getString("Amount");
+                System.out.println(bei);*/
+                list.add(new GetData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getString(5),resultSet.getDate(6)));
+            }
+            for(GetData s:list){
+                System.out.println(s);
             }
             //统计收入和支出
             statementshou=connection.createStatement();
