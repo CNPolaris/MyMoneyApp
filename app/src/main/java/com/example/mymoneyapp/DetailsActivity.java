@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 //这是关于账单信息的
-public class DetailsActivity extends AppCompatActivity implements View.OnClickListener,DatePicker.OnDateChangedListener {
+public class DetailsActivity extends AppCompatActivity implements View.OnClickListener,DatePicker.OnDateChangedListener{
     //日期选择器
     LinearLayout llDate=null;
     TextView tvDate=null;
@@ -215,5 +215,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+
 }
 

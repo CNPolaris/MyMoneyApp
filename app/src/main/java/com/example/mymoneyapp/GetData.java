@@ -34,7 +34,8 @@ public class GetData {
     @NonNull
     @Override
     public String toString() {
-        return "流水号:"+id+" "+"类型:"+leixing+" "+"项目:"+xiangmu+" "+"金额:"+money+" "+"日期:"+date;
+        //return "流水号:"+id+" "+"类型:"+leixing+" "+"项目:"+xiangmu+" "+"金额:"+money+" "+"日期:"+date;
+        return id+"  "+leixing+"  "+xiangmu+"  "+money+"  "+date;
     }
 
     public String getId() {

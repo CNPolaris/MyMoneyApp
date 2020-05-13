@@ -5,10 +5,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/xiangmu"/>
+        android:id="@+id/image"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:id="@+id/datainfo"/>
+        android:gravity="center"
+        android:layout_marginLeft="30dp"
+        android:textSize="18sp"
+        android:id="@+id/name"/>
 </LinearLayout>
