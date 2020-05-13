@@ -142,7 +142,7 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/editId"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -439,7 +439,7 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/upquebutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="保存" />
@@ -451,7 +451,7 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/button5"
+                        android:id="@+id/updelbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="删除" />

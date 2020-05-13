@@ -41,7 +41,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     public List<GetData>arrResult=new ArrayList<GetData>();
     //信息修改部分
     public static GetData result;
-    private EditText idText=null, leixingText=null, xiangmuText =null, jineText =null, beizhuText =null, riqiText =null;
+    //private EditText idText=null, leixingText=null, xiangmuText =null, jineText =null, beizhuText =null, riqiText =null;
     @Override
     protected void onStart() {
         super.onStart();updateBill();
@@ -64,12 +64,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         LayoutInflater layoutInflater = LayoutInflater.from(DetailsActivity.this);
         View layout=layoutInflater.inflate(R.layout.activity_update,null);
         //数据修改部分
-        idText =layout.findViewById(R.id.editId);
+        /*idText =layout.findViewById(R.id.editId);
         leixingText =layout.findViewById(R.id.editLeixing);
         xiangmuText =layout.findViewById(R.id.editxiangmu);
         jineText =layout.findViewById(R.id.editJine);
         beizhuText =layout.findViewById(R.id.editBeizhu);
-        riqiText =layout.findViewById(R.id.editDate);
+        riqiText =layout.findViewById(R.id.editDate);*/
         //ArrayAdapter<GetData>arrayAdapter=new ArrayAdapter<GetData>(this,R.layout.data_line,dataList);
         //listView.setAdapter(arrayAdapter);
         //底部导航栏
@@ -122,7 +122,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 //idText.setText(result.getId());leixingText.setText(result.getLeixing());xiangmuText.setText(result.getXiangmu());
                 //jineText.setText(""+result.getMoney());beizhuText.setText(result.getBeizhu());riqiText.setText(""+result.getDate());
                 startActivity(intent1);
-                System.out.println(leixingText.getText().toString());
+                //System.out.println(leixingText.getText().toString());
             }
         });
     }

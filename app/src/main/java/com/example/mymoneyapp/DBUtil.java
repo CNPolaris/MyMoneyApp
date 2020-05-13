@@ -385,6 +385,35 @@ public class DBUtil {
             }
         }
     }
+    //数据更新
+    public static  boolean dataUpdate(String username,String id,String leixing,String xiangmu,float money,String beizhu,String date) throws SQLException {
+        boolean result=true;//用于判断是否正确操作
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        String userdata="data"+username;
+        String updateSQL="UPDATE "+userdata +" SET revenue=?,types=?,Amount=?,tradeNotes=?,time=? WHERE number=?";
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(updateSQL);
+            preparedStatement.setString(1,leixing);
+            preparedStatement.setString(2,xiangmu);
+            preparedStatement.setFloat(3,money);
+            preparedStatement.setString(4,beizhu);
+            preparedStatement.setString(5,date);
+            preparedStatement.setString(6,id);
+            preparedStatement.executeUpdate();
+            result=true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("更新失败");
+            result=false;
+        }finally {
+            connection.close();
+            preparedStatement.close();
+            return result;
+        }
+        //return result;
+    }
     //用户注销账户
     public static void logout(String username,String password){
         Connection connection=null;
