@@ -35,6 +35,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private Button numjian=null,numjia=null;
     private LinearLayout beizhu,numlay;
     private TextView beizhuText=null;
+    private TextView showbeizzhu=null;
     //当前所选中的项目
     public String nowItem="";//项目名
     public TextView moneyTv=null;//当前金额的显示
@@ -156,7 +157,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         beizhu=findViewById(R.id.beizhulayout);
         numlay=findViewById(R.id.numLayout);
         beizhuText=findViewById(R.id.beizhu);
-
+        showbeizzhu=findViewById(R.id.getbeizhu);
         num0.setOnClickListener(this);
         num1.setOnClickListener(this);
         num2.setOnClickListener(this);
@@ -319,6 +320,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     protected void getItemName_zhichu(String msg){
         nowItem=msg;
         zhiORshou=-1;
+        showbeizzhu.setText(nowItem);
         //显示数字键盘还有备注区
         setVi();
         System.out.println(nowItem);
@@ -327,6 +329,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         nowItem=msg;
         zhiORshou=0;
         //显示数字键盘还有备注区
+        showbeizzhu.setText(nowItem);
         setVi();
         System.out.println(nowItem);
     }
@@ -371,9 +374,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     protected void setVi(){
         beizhu.setVisibility(View.VISIBLE);
         numlay.setVisibility(View.VISIBLE);
+        showbeizzhu.setText(nowItem);
     }
     //恢复数字键盘不可见
     protected void setNotVi(){
+        showbeizzhu.setText("");
         beizhu.setVisibility(View.GONE);
         numlay.setVisibility(View.GONE);
     }
@@ -385,6 +390,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         isDot = false;
         moneyTv.setText("0.00");
         beizhuText.setText("");
+        showbeizzhu.setText("");
         setNotVi();
     }
     //向数据库中插入数据

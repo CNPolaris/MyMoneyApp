@@ -414,6 +414,34 @@ public class DBUtil {
         }
         //return result;
     }
+    //删除某一条信息
+    public static boolean deleteLine(String username, String line)throws SQLException{
+        boolean result=true;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        String userdata="data"+username;
+        String delSQL="DELETE FROM "+userdata+" WHERE number=?";
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(delSQL);
+            preparedStatement.setString(1,line);
+            preparedStatement.executeUpdate();
+            result=true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result=false;
+        }finally {
+            try{
+                preparedStatement.close();
+                connection.close();
+                return result;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                result=false;
+            }
+        }
+        return result;
+    }
     //用户注销账户
     public static void logout(String username,String password){
         Connection connection=null;
