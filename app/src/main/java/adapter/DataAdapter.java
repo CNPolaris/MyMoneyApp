@@ -13,6 +13,4 @@ public class DataAdapter extends ArrayAdapter <GetData>{
         super(context,viewResourceId,objects);
         resourceId=viewResourceId;
     }
-
-
 }

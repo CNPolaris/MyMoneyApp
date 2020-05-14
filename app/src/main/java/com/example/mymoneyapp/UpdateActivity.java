@@ -40,9 +40,16 @@ public class UpdateActivity extends AppCompatActivity {
         imageView=findViewById(R.id.showicon);
 
         //显示数据-->将选中的信息显示在界面上
-        idText.setText(DetailsActivity.result.getId());leixingText.setText(DetailsActivity.result.getLeixing());xiangmuText.setText(DetailsActivity.result.getXiangmu());
-        jineText.setText(""+DetailsActivity.result.getMoney());beizhuText.setText(DetailsActivity.result.getBeizhu());riqiText.setText(""+DetailsActivity.result.getDate());
-        setIcon();
+        if(ShowMonthData.yes==0){
+            idText.setText(DetailsActivity.result.getId());leixingText.setText(DetailsActivity.result.getLeixing());xiangmuText.setText(DetailsActivity.result.getXiangmu());
+            jineText.setText(""+DetailsActivity.result.getMoney());beizhuText.setText(DetailsActivity.result.getBeizhu());riqiText.setText(""+DetailsActivity.result.getDate());
+            setIcon();
+        }
+        else if(ShowMonthData.yes==1){
+            idText.setText(ShowMonthData.monthresult.getId());leixingText.setText(ShowMonthData.monthresult.getLeixing());xiangmuText.setText(ShowMonthData.monthresult.getXiangmu());
+            jineText.setText(""+ShowMonthData.monthresult.getMoney());beizhuText.setText(ShowMonthData.monthresult.getBeizhu());riqiText.setText(""+ShowMonthData.monthresult.getDate());
+            setIcon();
+        }
         //保存按键-->执行数据更新
         upbaocun=findViewById(R.id.upquebutton);
         upbaocun.setOnTouchListener(new View.OnTouchListener() {
@@ -51,9 +58,16 @@ public class UpdateActivity extends AppCompatActivity {
                 update();
                 if (jieguo1 ==true){
                     Toast.makeText(UpdateActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                    Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
-                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent1);
+                    if(ShowMonthData.yes==0){
+                        Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
+                    }else {
+                        Intent intent1=new Intent(UpdateActivity.this,MyInfoActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
+                    }
+
                 }else {
                     Toast.makeText(UpdateActivity.this,"更新失败",Toast.LENGTH_SHORT).show();
                 }
@@ -67,10 +81,17 @@ public class UpdateActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 del();
                 if(jieguo2 ==true){
-                    Toast.makeText(UpdateActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
-                    Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
-                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent1);
+                    if(ShowMonthData.yes==0){
+                        Toast.makeText(UpdateActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
+                    }else {
+                        Toast.makeText(UpdateActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        Intent intent1=new Intent(UpdateActivity.this,ShowMonthData.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
+                    }
                 }else{
                     Toast.makeText(UpdateActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
                 }
@@ -82,10 +103,19 @@ public class UpdateActivity extends AppCompatActivity {
         llreturn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                Toast.makeText(UpdateActivity.this,"取消修改",Toast.LENGTH_SHORT).show();
-                startActivity(intent1);
+                if(ShowMonthData.yes==0){
+                    Intent intent1=new Intent(UpdateActivity.this,DetailsActivity.class);
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Toast.makeText(UpdateActivity.this,"取消修改",Toast.LENGTH_SHORT).show();
+                    startActivity(intent1);
+                }
+                else {
+                    Intent intent1=new Intent(UpdateActivity.this,ShowMonthData.class);
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Toast.makeText(UpdateActivity.this,"取消修改",Toast.LENGTH_SHORT).show();
+                    startActivity(intent1);
+                    return false;
+                }
                 return false;
             }
         });

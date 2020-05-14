@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -106,7 +105,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         //数据库查询结果的显示
         inquire();
         updateBill();
-
+        //listview显示账单
         System.out.println("主"+dataList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -133,8 +132,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     public void updateBill(){
         StringBuffer z=new StringBuffer();
         StringBuffer s=new StringBuffer();
-        tvzhichu.setText(z.append(DBUtil.monthzhichu));
-        tvshouru.setText(s.append(DBUtil.monthshouru));
+        tvzhichu.setText(z.append(DBUtil.dayzhichu));
+        tvshouru.setText(s.append(DBUtil.dayshouru));
         ArrayAdapter<GetData> adapter = new ArrayAdapter<GetData>(
                 DetailsActivity.this,   // Context上下文
                 android.R.layout.simple_list_item_1,  // 子项布局id
@@ -164,12 +163,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     /*
     * 日期选择器的设置
     * */
-    private  void initView(){
+    public void initView(){
         llDate=findViewById(R.id.ll_date);
         tvDate=findViewById(R.id.tv_date);
         llDate.setOnClickListener(this);
     }
-    private void initDatetime(){
+    public void initDatetime(){
         String newmonth = "";
         String newday="";
         Calendar calendar=Calendar.getInstance();

@@ -18,8 +18,9 @@ public class DBUtil {
 
     public static float zhichu=0;
     public static float shouru=0;
-    public static float monthzhichu=0;
-    public static float monthshouru=0;
+    public static float dayzhichu =0;
+    public static float dayshouru =0;
+    public static float monthzhichu=0,monthshouru=0;
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
         try {
@@ -270,7 +271,43 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
+    //按照月份进行查询
+    public static  void inquireMonthData(String username, String date){
+        Connection connection=null;
+        ResultSet resultSet1=null,resultSet2=null;
+        Statement statement1=null,statement2=null;
+        String userdata="data"+username;
+        //按照月查询收入、支出
+        String monthZhichuSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        String monthShouruSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        try {
+            connection=getSQLConnection();
+            statement1=connection.createStatement();
+            statement2=connection.createStatement();
+            resultSet1=statement1.executeQuery(monthZhichuSQL);
+            resultSet2=statement2.executeQuery(monthShouruSQL);
+            if(resultSet1.next()&&resultSet2.next()){
+                monthzhichu=resultSet1.getFloat(1);
+                monthshouru=resultSet2.getFloat(1);
+            }else {
+                monthzhichu=0;
+                monthshouru=0;
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                resultSet1.close();
+                resultSet2.close();
+                statement1.close();
+                statement2.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //从数据库中查询收支数据
     public static List<GetData> inquireData(String username,String date){
         Connection connection=null;
@@ -288,9 +325,12 @@ public class DBUtil {
         String insertDataSQL="UPDATE UserInfo set income=? ,expend=? ,balance=? where username='"+username+"'";
         String zhichuSQL="select SUM(Amount) FROM "+userdata+" where Amount<=0";//查询所有的支出
         String shouruSQL="select SUM(Amount) FROM "+userdata+" where Amount>=0";//查询所有的收入
-        //按照月份查询收入、支出金额
-        String monthZhiChuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
-        String monthShouRuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        //按照天查询收入、支出金额
+        String dayZhiChuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        String dayShouRuSQl="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        //按照月查询收入、支出
+        String monthZhichuSQL="";
+        String monthShouruSQL="";
         try{
             connection=getSQLConnection();
             statement=connection.createStatement();
@@ -322,19 +362,19 @@ public class DBUtil {
             //按月查询收支的结果显示
             //支出
             statementmonthzhi=connection.createStatement();
-            resultSetmonthzhi=statementmonthzhi.executeQuery(monthZhiChuSQl);
+            resultSetmonthzhi=statementmonthzhi.executeQuery(dayZhiChuSQl);
             //收入
             statementmonthshou=connection.createStatement();
-            resultSetmonthshou=statementmonthshou.executeQuery(monthShouRuSQl);
+            resultSetmonthshou=statementmonthshou.executeQuery(dayShouRuSQl);
             if(resultSetmonthzhi.next()&&resultSetmonthshou.next()){
-                monthzhichu=resultSetmonthzhi.getFloat(1);
-                monthshouru=resultSetmonthshou.getFloat(1);
+                dayzhichu =resultSetmonthzhi.getFloat(1);
+                dayshouru =resultSetmonthshou.getFloat(1);
             }else{
-                monthzhichu=0;
-                monthshouru=0;
+                dayzhichu =0;
+                dayshouru =0;
             }
-            System.out.println("日收入"+monthshouru);
-            System.out.println("日支出"+monthzhichu);
+            System.out.println("日收入"+ dayshouru);
+            System.out.println("日支出"+ dayzhichu);
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
