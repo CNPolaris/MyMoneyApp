@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Data;
@@ -27,11 +28,16 @@ public class MyInfoActivity extends AppCompatActivity {
     final List<Map<String, Object>> line = new ArrayList<>();
     final int[]image=new int[]{R.drawable.jiating,R.drawable.clear,R.drawable.zhuxiao,R.drawable.tuichu};
     final String[]title=new String[]{"家庭管理","清除数据","账户注销 ","退出登录"};
+    //账单信息展示
+    private TextView tvcount,tvacount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         initMenu();//实例化布局
+        //账单信息事件绑定
+        tvcount=findViewById(R.id.showSum);
+        tvacount=findViewById(R.id.showsummoney);
         //底部导航栏
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -85,8 +91,34 @@ public class MyInfoActivity extends AppCompatActivity {
 
             }
         });
+        //显示账户信息
+        initInfo();
     }
-private void initMenu(){
+    /*
+    * 显示账单信息
+    */
+    private void initInfo(){
+        final String name=UserManage.getInstance().getUserInfo(this).getUsername();
+        final int[] count = {0};
+        final float[] balance = {0};
+        new Thread(){
+            public void run(){
+                try{
+                    DBUtil dbUtil=new DBUtil();
+                    count[0] =dbUtil.getcount(name);
+                    balance[0] =dbUtil.getBalance(name);
+                    tvcount.setText(""+count[0]);
+                    tvacount.setText(""+balance[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+    /*
+    * 实例化菜单
+    */
+    private void initMenu(){
         for(int i=0;i<4;i++){
             Map<String,Object>temp=new LinkedHashMap<>();
             temp.put("image",image[i]);

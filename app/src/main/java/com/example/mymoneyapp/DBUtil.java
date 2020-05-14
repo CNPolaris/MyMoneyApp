@@ -1,17 +1,5 @@
 package com.example.mymoneyapp;
-import android.app.Dialog;
-import android.provider.ContactsContract;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-
-import com.Data;
-
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Type;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -441,6 +429,59 @@ public class DBUtil {
             }
         }
         return result;
+    }
+    //统计记账条数
+    public static int getcount(String username){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        String userdata="data"+username;
+        String getcountSQL="SELECT COUNT(*)FROM "+userdata;
+        try {
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(getcountSQL);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                resultSet.close();
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+    //返回财产余额
+    public float getBalance(String username){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        String balanceSQL="SELECT balance FROM UserInfo WHERE username="+username;
+        try {
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(balanceSQL);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getFloat(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                resultSet.close();
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
     //用户注销账户
     public static void logout(String username,String password){
