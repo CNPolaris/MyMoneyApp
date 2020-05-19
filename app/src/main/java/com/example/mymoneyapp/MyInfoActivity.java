@@ -41,7 +41,8 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout tvmonthshow;
     private TextView tvmonthshou,tvmonthzhi,tvmonthbalance;
     public static TextView tvmonth;
-    private StringBuffer date;
+    public static String otheruse;
+    public static StringBuffer date;
     private Context context;
     private int year,month,day;
     @Override
@@ -160,6 +161,7 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
             newmonth="0"+String.valueOf(month);
         }else{newmonth=String.valueOf(month);}
         tvmonth.setText(date.append((year)).append("-").append(newmonth));
+        otheruse=tvmonth.getText().toString();
     }
     /*
     * 显示账单信息

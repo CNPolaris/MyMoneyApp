@@ -7,11 +7,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBUtil {
     //电脑ip地址可能会发生改变，要及时检查
-    private static String IP = "192.168.31.150";
+    private static String IP = "192.168.31.149";
     private static String DBName = "moneyBookDB";
     private static String USER = "sa";
     private static String PWD = "123";
@@ -21,6 +23,8 @@ public class DBUtil {
     public static float dayzhichu =0;
     public static float dayshouru =0;
     public static float monthzhichu=0,monthshouru=0;
+    public static List<DayData> zhilist=new ArrayList<DayData>();
+    public static List<DayData> shoulist=new ArrayList<DayData>();
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
         try {
@@ -308,6 +312,56 @@ public class DBUtil {
             }
         }
     }
+    public static  void inquireDayData(String username, String date){
+        Connection connection=null;
+        ResultSet resultSet1=null,resultSet2=null;
+        Statement statement1=null,statement2=null;
+        String userdata="data"+username;
+        String newdate="";
+        //按照月查询收入、支出
+        String dayZhichuSQL="";//"SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        String dayShouruSQL="";//"SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        float dayzhichu=0,dayshouru=0;
+        try {
+            connection=getSQLConnection();
+            statement1=connection.createStatement();
+            statement2=connection.createStatement();
+            for(int i=1;i<=30;i++){
+                String day="";
+                if(i<10){day="0"+String.valueOf(i);}
+                else {day=String.valueOf(i);}
+                newdate=date+"-"+day;
+                System.out.println(newdate);
+                dayZhichuSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+newdate+"%'and data_a.number=data_b.number)";
+                dayShouruSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+newdate+"%'and data_a.number=data_b.number)";
+                resultSet1=statement1.executeQuery(dayZhichuSQL);
+                resultSet2=statement2.executeQuery(dayShouruSQL);
+                if(resultSet1.next()&&resultSet2.next()){
+                    dayzhichu=resultSet1.getFloat(1);
+                    //System.out.println(dayzhichu);
+                    dayshouru=resultSet2.getFloat(1);
+                }else {
+                    dayzhichu=0;
+                    dayshouru=0;
+                }
+                zhilist.add(new DayData(i,dayzhichu));
+                shoulist.add(new DayData(i,dayshouru));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                resultSet1.close();
+                resultSet2.close();
+                statement1.close();
+                statement2.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     //从数据库中查询收支数据
     public static List<GetData> inquireData(String username,String date){
         Connection connection=null;

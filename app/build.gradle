@@ -47,4 +47,5 @@ dependencies {
     implementation files('libs\\sqljdbc.jar')
     implementation files('libs\\jtds-1.2.7.jar')
     implementation files('libs\\sqljdbc.jar')
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
