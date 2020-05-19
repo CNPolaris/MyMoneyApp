@@ -1,4 +1,4 @@
-package com.example.mymoneyapp;
+package data;
 
 public class MonthData {
     private int month;

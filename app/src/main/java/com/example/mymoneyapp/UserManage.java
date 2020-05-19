@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.Data;
+import data.Data;
 
 public class UserManage {
     private static UserManage instance;

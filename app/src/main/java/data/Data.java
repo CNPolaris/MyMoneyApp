@@ -1,4 +1,4 @@
-package com;
+package data;
 
 import android.app.Application;
 

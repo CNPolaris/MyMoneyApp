@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,7 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Data;
+import data.Data;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -195,38 +194,9 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
             line.add(temp);
         }
         listView=findViewById(R.id.usermanger);
-    SimpleAdapter simpleAdapter=new SimpleAdapter(this,line,R.layout.data_item,new String[]{"image","name"},new int[]{R.id.image,R.id.name});
-    listView.setAdapter(simpleAdapter);
+        SimpleAdapter simpleAdapter=new SimpleAdapter(this,line,R.layout.data_item,new String[]{"image","name"},new int[]{R.id.image,R.id.name});
+        listView.setAdapter(simpleAdapter);
 }
-        //账户注销事件
-        /*Button dropuser=findViewById(R.id.dropuserbutton);
-        dropuser.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                    dropowndata();
-
-            }
-        });*/
-        //账户数据清除事件
-        /*final Button clearuser=findViewById(R.id.cleardatabutton);
-        clearuser.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                clearowndata();
-                return false;
-            }
-        });*/
-
-        //退出登录
-       /* Button tuichu=findViewById(R.id.tuichubutton);
-        tuichu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                dropOut();
-                return false;
-            }
-        });
-    }*/
 
 
         //账户注销方法

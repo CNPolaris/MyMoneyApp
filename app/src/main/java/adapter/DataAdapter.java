@@ -3,7 +3,7 @@ package adapter;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.example.mymoneyapp.GetData;
+import data.GetData;
 
 import java.util.List;
 

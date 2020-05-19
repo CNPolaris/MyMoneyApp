@@ -1,4 +1,4 @@
-package com.example.mymoneyapp;
+package data;
 
 import androidx.annotation.NonNull;
 

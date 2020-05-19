@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import data.DayData;
+import data.GetData;
+import data.ItemData;
+import data.MonthData;
+
 public class DBUtil {
     //电脑ip地址可能会发生改变，要及时检查
     private static String IP = "192.168.31.149";
@@ -28,6 +33,8 @@ public class DBUtil {
     public static List<DayData> shoulist=new ArrayList<DayData>();
     public static List<MonthData> monthZhilist=new ArrayList<MonthData>();
     public static List<MonthData> monthshoulist=new ArrayList<MonthData>();
+
+    public static List<ItemData>itemList=new ArrayList<ItemData>();
 
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
@@ -400,8 +407,45 @@ public class DBUtil {
 
     }
 
+    //在数据库中按照项目查询总金额
+    public static void inquireItem(String []itme){
+        Connection connection=null;
+        Statement statement=null;
+        ResultSet resultSet=null;
+        float per=0,money;
+        try{
+            connection=getSQLConnection();
+            statement=connection.createStatement();
+            for(String s:itme){
+                String SQL="SELECT SUM(Amount)FROM "+s+"_view";
+                resultSet=statement.executeQuery(SQL);
+                if(resultSet.next()){
+                    money=resultSet.getFloat(1);
+                }else{
+                    money=0;
+                }
+                if(monthzhichu!=0){
+                    per=money/monthzhichu;
+                }else {
+                    per=0;
+                }
+                itemList.add(new ItemData(s,Math.abs(money),Math.abs(per)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try{
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //从数据库中查询收支数据
-    public static List<GetData> inquireData(String username,String date){
+    public static List<GetData> inquireData(String username, String date){
         Connection connection=null;
         ResultSet resultSet=null;
         Statement statement=null;

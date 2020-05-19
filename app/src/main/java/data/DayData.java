@@ -1,4 +1,4 @@
-package com.example.mymoneyapp;
+package data;
 
 public class DayData {
     private int day;
