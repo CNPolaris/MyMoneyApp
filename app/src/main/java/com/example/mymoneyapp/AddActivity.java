@@ -53,8 +53,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         TabHost tabHost=findViewById(R.id.addtab);
         tabHost.setup();
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("收入",getResources().getDrawable(R.drawable.ic_launcher_background)).setContent(R.id.tab1));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("支出",null).setContent(R.id.tab2));
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("支出",getResources().getDrawable(R.drawable.ic_launcher_background)).setContent(R.id.tab1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("收入",null).setContent(R.id.tab2));
 
         //zhicuhSpinner.setOnItemLongClickListener();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
