@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.content.Intent;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +20,32 @@ import java.sql.SQLException;
 public class MainActivity extends AppCompatActivity {
     private static String errMsg="";
     private static boolean check=false;
-
+    private EditText pass;
+    private ImageView ieye;
+    private boolean isopen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //密码可见不可见
+        ieye=findViewById(R.id.logineye);
+        pass=findViewById(R.id.passText);
+        ieye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isopen){
+                    ieye.setSelected(true);
+                    isopen=true;
+                    pass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else {
+                    ieye.setSelected(false);
+                    isopen = false;
+                    //密码不可见
+                    pass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
         //先进行一次判断，看是否已经存在登录用户
         if(UserManage.getInstance().hasUserInfo(this)){
             Intent intent=new Intent(MainActivity.this,DetailsActivity.class);

@@ -3,11 +3,15 @@ package com.example.mymoneyapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,11 +21,32 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class LoginInActivity extends AppCompatActivity {
-
+    private EditText  password;
+    private ImageView ieye;
+    private boolean isopen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_in);
+        //密码可见不可见
+        ieye=findViewById(R.id.eye);
+        password=findViewById(R.id.passText);
+        ieye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isopen){
+                    ieye.setSelected(true);
+                    isopen=true;
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else {
+                    ieye.setSelected(false);
+                    isopen = false;
+                    //密码不可见
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
         /*为返回登录菜单添加监听事件*/
         ImageView returnMain=findViewById(R.id.returnView1);
         returnMain.setOnClickListener(new View.OnClickListener() {
