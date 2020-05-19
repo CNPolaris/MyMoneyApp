@@ -8,17 +8,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.TabHost;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -28,7 +31,8 @@ public class chartActivity extends AppCompatActivity {
     Context context;
     //图表一：月度收支折线图
     LineChart lineChart =null;
-
+    //图表二：年度收支条形图
+    BarChart barChart;
     //年月时间获取
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +42,14 @@ public class chartActivity extends AppCompatActivity {
         //初始化tabhost
         TabHost tabHost = findViewById(R.id.charthost);
         tabHost.setup();
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("图表1", null).setContent(R.id.tab1));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("图表2", null).setContent(R.id.tab2));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("图表3", null).setContent(R.id.tab3));
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("月度收支", null).setContent(R.id.tab1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("年度收支", null).setContent(R.id.tab2));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("消费项目", null).setContent(R.id.tab3));
         //月度收支控件绑定
-        //开始设置图表
         lineChart = findViewById(R.id.chart);
         lineChart.setTouchEnabled(true);
+        //年度收支条形图控件绑定
+        barChart=findViewById(R.id.bar);
         //底部导航栏
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -75,8 +80,10 @@ public class chartActivity extends AppCompatActivity {
         });
         //更新数据
         updateData();
-        //绘制折线图
+        //绘制月度收支折线图
         drawLine();
+        //绘制年度收支饼形图
+        drawBar();
     }
     /*
     * 更新获取数据*/
@@ -86,9 +93,49 @@ public class chartActivity extends AppCompatActivity {
             public void run(){
                 String date=MyInfoActivity.otheruse;
                 System.out.println(date);
-                DBUtil.inquireDayData(name,date);
+                DBUtil.updateChartData(name,date);
             }
         }.start();
+    }
+    /*
+    *绘制年度收支条形图*/
+    private void drawBar(){
+        List<BarEntry>list1=new ArrayList<>();//收入
+        List<BarEntry>list2=new ArrayList<>();//支出
+        for(MonthData data:DBUtil.monthshoulist){//收入添加数据
+            list1.add(new BarEntry(data.getMonth(),data.getMoney()));
+        }
+        for(MonthData data :DBUtil.monthZhilist){//支出添加数据
+            list2.add(new BarEntry(data.getMonth(),data.getMoney()));
+        }
+        BarDataSet barDataSet1=new BarDataSet(list1,"收入");
+        barDataSet1.setColor(Color.GREEN);//收入设置为绿色
+        BarDataSet barDataSet2=new BarDataSet(list2,"支出");
+        barDataSet2.setColor(Color.RED);//支出设置为红色
+
+        BarData barData=new BarData(barDataSet1);//先把收入放进去
+        barData.addDataSet(barDataSet2);//再把支出放进去
+        //绘制条形图
+        barChart.setData(barData);
+        barData.setBarWidth(0.3f);//柱子的宽度
+        //重点！   三个参数   分别代表   X轴起点     组与组之间的间隔      组内柱子的间隔
+        barData.groupBars(1,0.6f,0);
+        barChart.getXAxis().setCenterAxisLabels(true);   //设置柱子（柱子组）居中对齐X轴上的点
+        barChart.getXAxis().setAxisMaximum(13);   //X轴最大数值
+        barChart.getXAxis().setAxisMinimum(1);   //X轴最小数值
+        //X轴坐标的个数    第二个参数一般填false     true表示强制设置标签数 可能会导致X轴坐标显示不全等问题
+        //barChart.getXAxis().setLabelCount(12,true);
+        barChart.getDescription().setEnabled(false);    //右下角一串英文字母不显示
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);   //X轴的位置设置为下  默认为上
+        barChart.getAxisRight().setEnabled(false);     //右侧Y轴不显示   默认为显示
+        for(IDataSet ser:barChart.getData().getDataSets()){
+            barDataSet1.setDrawValues(!barDataSet1.isDrawValuesEnabled());
+            barDataSet2.setDrawValues(!barDataSet2.isDrawValuesEnabled());
+        }
+        XAxis xAxis=barChart.getXAxis();
+        xAxis.setGranularity(1);
+        xAxis.setLabelCount(12);
+        barChart.invalidate();
     }
     /*
     * 绘制图表1--折线图*/

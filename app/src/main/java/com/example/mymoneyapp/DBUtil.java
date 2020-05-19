@@ -23,8 +23,12 @@ public class DBUtil {
     public static float dayzhichu =0;
     public static float dayshouru =0;
     public static float monthzhichu=0,monthshouru=0;
+
     public static List<DayData> zhilist=new ArrayList<DayData>();
     public static List<DayData> shoulist=new ArrayList<DayData>();
+    public static List<MonthData> monthZhilist=new ArrayList<MonthData>();
+    public static List<MonthData> monthshoulist=new ArrayList<MonthData>();
+
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
         try {
@@ -312,16 +316,22 @@ public class DBUtil {
             }
         }
     }
-    public static  void inquireDayData(String username, String date){
+    public static  void updateChartData(String username, String date){
         Connection connection=null;
-        ResultSet resultSet1=null,resultSet2=null;
-        Statement statement1=null,statement2=null;
+        ResultSet resultSet1=null,resultSet2=null,resultSet3=null,resultSet4=null;
+        Statement statement1=null,statement2=null,statement3=null,statement4=null;
         String userdata="data"+username;
         String newdate="";
-        //按照月查询收入、支出
+        //按照月查询每一天的收入、支出
         String dayZhichuSQL="";
         String dayShouruSQL="";
+        //按照年查询每个月度收支、支出
+        String monthzhichuSQL="";
+        String monthshouruSQL="";
         float dayzhichu=0,dayshouru=0;
+        float monthzhichu=0,monthshouru=0;
+        //获取年
+        String year=date.substring(0,4);
         try {
             connection=getSQLConnection();
             statement1=connection.createStatement();
@@ -337,7 +347,6 @@ public class DBUtil {
                 resultSet2=statement2.executeQuery(dayShouruSQL);
                 if(resultSet1.next()&&resultSet2.next()){
                     dayzhichu=resultSet1.getFloat(1);
-                    //System.out.println(dayzhichu);
                     dayshouru=resultSet2.getFloat(1);
                 }else {
                     dayzhichu=0;
@@ -346,19 +355,49 @@ public class DBUtil {
                 zhilist.add(new DayData(i,dayzhichu));
                 shoulist.add(new DayData(i,dayshouru));
             }
+            //按照每个月依次查询
+            for(int y=1;y<=12;y++){
+                String month="";
+                if(y<10){month="0"+String.valueOf(y);}
+                else {month=String.valueOf(y);}
+                String monthdate=year+"-"+month;
+                monthzhichuSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+monthdate+"%'and data_a.number=data_b.number)";
+                monthshouruSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+monthdate+"%'and data_a.number=data_b.number)";
+                statement3=connection.createStatement();
+                statement4=connection.createStatement();
+                resultSet3=statement3.executeQuery(monthzhichuSQL);
+                resultSet4=statement4.executeQuery(monthshouruSQL);
+                if(resultSet3.next()&&resultSet4.next()){
+                    monthzhichu=resultSet3.getFloat(1);
+                    monthshouru=resultSet4.getFloat(1);
+                }else {
+                    monthzhichu=0;
+                    monthshouru=0;
+                }
+                monthZhilist.add(new MonthData(y,monthzhichu));
+                monthshoulist.add(new MonthData(y,monthshouru));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        }
             try{
                 resultSet1.close();
                 resultSet2.close();
                 statement1.close();
                 statement2.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try{
+                resultSet3.close();
+                statement3.close();
+                resultSet4.close();
+                statement4.close();
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+
     }
 
     //从数据库中查询收支数据
