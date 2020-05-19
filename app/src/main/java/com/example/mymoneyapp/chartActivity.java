@@ -18,6 +18,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ import java.util.List;
 
 public class chartActivity extends AppCompatActivity {
     Context context;
+    //图表一：月度收支折线图
+    LineChart chart =null;
+
     //年月时间获取
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,9 @@ public class chartActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("图表1", null).setContent(R.id.tab1));
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("图表2", null).setContent(R.id.tab2));
         tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("图表3", null).setContent(R.id.tab3));
+        //月度收支控件绑定
+        //开始设置图表
+        chart = findViewById(R.id.chart);
         //底部导航栏
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -68,35 +75,8 @@ public class chartActivity extends AppCompatActivity {
         });
         //更新数据
         updateData();
-        //开始设置图表
-        LineChart chart = findViewById(R.id.chart);
-        //chart = new LineChart(context);
-        LinearLayout tablay1 = findViewById(R.id.tab1);
-        //tablay1.addView(chart);
-        //设置图表数据
-        List<Entry> entries = new ArrayList<>();//支出表
-        for(DayData data:DBUtil.zhilist){
-           System.out.println(data.getDay()+"  "+data.getMoney());
-           entries.add(new Entry(data.getDay(),data.getMoney()));
-        }
-        List<Entry> entries2=new ArrayList<>();//收入表
-        for(DayData data:DBUtil.shoulist){
-            entries2.add(new Entry(data.getDay(),data.getMoney()));
-        }
-        LineDataSet dataSet = new LineDataSet(entries, "支出");
-        LineDataSet dataSet2=new LineDataSet(entries2,"收入");
-
-        dataSet.setCircleColor(Color.parseColor("#7d7d7d"));//圆点颜色
-        dataSet.setLineWidth(1f);//线条宽度
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setLabelCount(15);
-
-        LineData lineData = new LineData(dataSet);
-        LineData lineData2=new LineData(dataSet2);
-
-        chart.setData(lineData);
-        //chart.setData(lineData2);
-        chart.invalidate();
+        //绘制折线图
+        drawLine();
     }
     /*
     * 更新获取数据*/
@@ -109,5 +89,42 @@ public class chartActivity extends AppCompatActivity {
                 DBUtil.inquireDayData(name,date);
             }
         }.start();
+    }
+    /*
+    * 绘制图表1--折线图*/
+    private void drawLine(){
+        //设置图表数据
+        //支出表
+        List<Entry> entries = new ArrayList<>();
+        for(DayData data:DBUtil.zhilist){
+            System.out.println(data.getDay()+"  "+data.getMoney());
+            entries.add(new Entry(data.getDay(),data.getMoney()));
+        }
+        //收入表
+        List<Entry> entries2=new ArrayList<>();
+        for(DayData data:DBUtil.shoulist){
+            entries2.add(new Entry(data.getDay(),data.getMoney()));
+        }
+        //收支线对象
+        LineDataSet dataSet1 = new LineDataSet(entries, "支出");
+        dataSet1.setCircleColor(Color.parseColor("#7d7d7d"));//圆点颜色
+        dataSet1.setLineWidth(1f);//线条宽度
+
+        LineDataSet dataSet2=new LineDataSet(entries2,"收入");
+
+        //图表属性设置
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setLabelCount(15);
+
+        //保存LineDataSet集合
+        ArrayList<ILineDataSet>dataSets=new ArrayList<>();
+        dataSets.add(dataSet1);
+        dataSets.add(dataSet2);
+        //创建LineData对象 属于LineChart折线图的数据集合
+        LineData lineData=new LineData(dataSets);
+        //添加到图表中
+        chart.setData(lineData);
+        //开始绘制折线图
+        chart.invalidate();
     }
 }
