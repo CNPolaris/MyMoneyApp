@@ -8,27 +8,26 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.view.MotionEvent;
 import android.widget.TabHost;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class chartActivity extends AppCompatActivity {
     Context context;
     //图表一：月度收支折线图
-    LineChart chart =null;
+    LineChart lineChart =null;
 
     //年月时间获取
     @Override
@@ -44,7 +43,8 @@ public class chartActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("图表3", null).setContent(R.id.tab3));
         //月度收支控件绑定
         //开始设置图表
-        chart = findViewById(R.id.chart);
+        lineChart = findViewById(R.id.chart);
+        lineChart.setTouchEnabled(true);
         //底部导航栏
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
@@ -111,9 +111,10 @@ public class chartActivity extends AppCompatActivity {
         dataSet1.setLineWidth(1f);//线条宽度
 
         LineDataSet dataSet2=new LineDataSet(entries2,"收入");
-
+        dataSet2.setColor(Color.parseColor("#FF3366"));
+        dataSet2.setCircleColor(Color.parseColor("#330066"));//圆点颜色
         //图表属性设置
-        XAxis xAxis = chart.getXAxis();
+        XAxis xAxis = lineChart.getXAxis();
         xAxis.setLabelCount(15);
 
         //保存LineDataSet集合
@@ -123,8 +124,8 @@ public class chartActivity extends AppCompatActivity {
         //创建LineData对象 属于LineChart折线图的数据集合
         LineData lineData=new LineData(dataSets);
         //添加到图表中
-        chart.setData(lineData);
+        lineChart.setData(lineData);
         //开始绘制折线图
-        chart.invalidate();
+        lineChart.invalidate();
     }
 }

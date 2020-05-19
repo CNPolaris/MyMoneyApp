@@ -319,8 +319,8 @@ public class DBUtil {
         String userdata="data"+username;
         String newdate="";
         //按照月查询收入、支出
-        String dayZhichuSQL="";//"SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
-        String dayShouruSQL="";//"SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+date+"%'and data_a.number=data_b.number)";
+        String dayZhichuSQL="";
+        String dayShouruSQL="";
         float dayzhichu=0,dayshouru=0;
         try {
             connection=getSQLConnection();
@@ -331,7 +331,6 @@ public class DBUtil {
                 if(i<10){day="0"+String.valueOf(i);}
                 else {day=String.valueOf(i);}
                 newdate=date+"-"+day;
-                System.out.println(newdate);
                 dayZhichuSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount<=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+newdate+"%'and data_a.number=data_b.number)";
                 dayShouruSQL="SELECT SUM(Amount)FROM "+userdata+" as data_a WHERE Amount>=0 and EXISTS(SELECT * FROM "+userdata +" as data_b WHERE CONVERT(VARCHAR,time,120)like '%"+newdate+"%'and data_a.number=data_b.number)";
                 resultSet1=statement1.executeQuery(dayZhichuSQL);
