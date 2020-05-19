@@ -214,16 +214,27 @@ public class DBUtil {
     public static void creatData(String username) throws SQLException {
         String tablename="data"+username;
         String tableSql="create table "+tablename+"(number VARCHAR(10) not null PRIMARY key,revenue VARCHAR(10) not NULL,types VARCHAR(10) not NULL,Amount FLOAT not null,tradeNotes VARCHAR(53),time Datetime)";
+        String trigger1="create trigger updateBablance"+username+" on " +tablename+ " after insert " + " as " + " declare @shouru float,@zhichu float " + " begin" + " select @shouru=SUM(Amount) from "+tablename+" where revenue='收入'" + " select @zhichu=SUM(Amount) from "+tablename+" where revenue='支出'" + " update UserInfo set income=@shouru,expend=@zhichu,balance=@shouru+@zhichu where username='"+username+ "' end";
+        String trigger2="create trigger afterdelete"+username+" on " +tablename+ " after delete " + " as " + " declare @money float " + " begin " + " select @money=Amount from deleted " + " update UserInfo set income=income-@money,expend=expend-@money,balance=income+expend where username='"+username +"' end";
         Connection connection=null;
-        PreparedStatement preparedStatement=null;
+        PreparedStatement preparedStatement=null,preparedStatement2=null,preparedStatement3=null;
         try {
             connection=getSQLConnection();
             preparedStatement=connection.prepareStatement(tableSql);
             preparedStatement.executeUpdate();
+            preparedStatement2=connection.prepareStatement(trigger1);
+            //preparedStatement2.setString(1,username);
+            preparedStatement2.executeUpdate();
+            preparedStatement3=connection.prepareStatement(trigger2);
+            //preparedStatement3.setString(1,username);
+            preparedStatement3.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             preparedStatement.close();
+            preparedStatement2.close();
+            preparedStatement3.close();
             connection.close();
         }
     }
