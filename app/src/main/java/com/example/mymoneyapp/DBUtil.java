@@ -36,6 +36,7 @@ public class DBUtil {
 
     public static List<ItemData>itemList=new ArrayList<ItemData>();
 
+    public static String FAname="";
     private static Connection getSQLConnection() throws SQLException {
         Connection con = null;
         try {
@@ -104,6 +105,7 @@ public class DBUtil {
             preparedStatement.setString(2,familyown);
             preparedStatement.setString(3,familycode);
             preparedStatement.executeUpdate();
+            FAname=familyname;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -149,6 +151,7 @@ public class DBUtil {
                     pstmup.setString(2,familyname);
                     pstmup.executeUpdate();
 
+                    FAname=familyname;
                 }
             }else{
                 flag=false;
@@ -162,6 +165,89 @@ public class DBUtil {
             pstmAdd.close();
             pstmcolu.close();
             pstmup.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+    //开启同步
+    public static boolean openSycn(String username){
+        boolean flag=false;
+        String userdata="data"+username;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null,preparedStatement1=null,preparedStatement2=null;
+
+        String lastone="";
+        String findSQL="select familyname from UserInfo where username=?";
+        ResultSet resultSet=null,resultSet1=null;
+        try{
+            connection=getSQLConnection();
+            preparedStatement2=connection.prepareStatement(findSQL);
+            preparedStatement2.setString(1,username);
+            resultSet1=preparedStatement2.executeQuery();
+            if(resultSet1.next()){
+                FAname=resultSet1.getString(1);
+                System.out.println(FAname);
+                if(FAname==null){
+                    flag=false;
+                    return flag;
+                }else {
+                    String lastSQL="select MAX(number) from "+FAname;
+                    preparedStatement=connection.prepareStatement(lastSQL);
+                    resultSet=preparedStatement.executeQuery();
+                    if(resultSet.next()){
+                        String one=resultSet.getString(1);
+                        if(one!=null){
+                            lastone=String.valueOf(Integer.valueOf(one)+1);
+                        }else {
+                            lastone="1";
+                        }
+                    }
+                    String openSQL="create trigger Sync"+username+" on " +userdata+ " after insert " + " as " + " declare @num varchar(10),@user varchar(10),@reve varchar(10),@type varchar(10),@amount float,@trade varchar(53),@t datetime " + " begin " + " select @reve=inserted.revenue ,@type=inserted.types,@amount=inserted.Amount,@trade=inserted.tradeNotes,@t=inserted.time from inserted " + " set @user="+username + " set @num="+lastone + " insert into "+FAname+" values(@num,@user,@reve,@type,@amount,@trade,@t) " + " end";
+                    preparedStatement1=connection.prepareStatement(openSQL);
+                    //preparedStatement1.setString(1,username);
+                    //preparedStatement1.setString(2,lastone);
+                    System.out.println(openSQL);
+
+                    preparedStatement1.executeUpdate();
+                    flag=true;
+                }
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag=false;
+        }
+        try{
+            resultSet.close();
+            resultSet1.close();
+            preparedStatement.close();
+            preparedStatement1.close();
+            preparedStatement2.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+    //关闭同步
+    public static boolean closeSync(String username){
+        String closeSQL="drop trigger Sync"+username;
+        boolean flag=false;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(closeSQL);
+            preparedStatement.executeUpdate();
+            flag=true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag=false;
+        }try{
+            preparedStatement.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

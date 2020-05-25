@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,8 +19,9 @@ import java.util.Map;
 
 public class FamilyActivity extends AppCompatActivity {
     private ListView famliyView;
-
     private TextView returnMyinfo;
+
+    private boolean flag,flag2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,16 +56,26 @@ public class FamilyActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case 2://开启同步
-
+                        openSync();
+                        if (flag==true){
+                            Toast.makeText(FamilyActivity.this,"开启同步成功",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(FamilyActivity.this,"开启同步失败",Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 3://结束同步
-
+                        closeSync();
+                        if (flag2==true){
+                            Toast.makeText(FamilyActivity.this,"关闭同步成功",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(FamilyActivity.this,"关闭同步失败",Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 4://家庭账单
 
                         break;
                     case 5://退出家庭
-
+                        dropFamily();
                         break;
                     case 6://删除家庭
 
@@ -86,5 +98,36 @@ public class FamilyActivity extends AppCompatActivity {
         famliyView=findViewById(R.id.familySet);
         SimpleAdapter simpleAdapter=new SimpleAdapter(this,line,R.layout.data_item,new String[]{"image","name"},new int[]{R.id.image,R.id.name});
         famliyView.setAdapter(simpleAdapter);
+    }
+    //退出家庭
+    private void dropFamily(){
+
+    }
+    //开启同步
+    private void openSync(){
+        final String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        new Thread(){
+            public void run(){
+                try{
+                    flag=DBUtil.openSycn(username);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+    //结束同步
+    private void closeSync(){
+        final String username=UserManage.getInstance().getUserInfo(this).getUsername();
+        new Thread(){
+            public void run(){
+                try{
+                    flag2=DBUtil.closeSync(username);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }.start();
     }
 }
