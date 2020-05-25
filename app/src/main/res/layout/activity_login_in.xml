@@ -5,20 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
+    android:background="@drawable/plan_progress"
     android:focusableInTouchMode="false"
 
     tools:context=".LoginInActivity">
 
     <Button
         android:id="@+id/loginbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="107dp"
+        android:layout_height="53dp"
         android:layout_marginStart="116dp"
         android:layout_marginLeft="116dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:layout_marginBottom="365dp"
+        android:background="@drawable/bb_normal"
         android:text="注册"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/clebutton"
@@ -30,7 +32,7 @@
         android:layout_width="407dp"
         android:layout_height="61dp"
         android:orientation="horizontal"
-        android:background="@drawable/badge_dialog_bg_b"
+        android:background="@drawable/score_act_vip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -72,8 +74,9 @@
                 android:id="@+id/textView"
                 android:layout_width="110dp"
                 android:layout_height="match_parent"
+                android:gravity="center|right"
                 android:text="用户名"
-                android:textSize="30sp" />
+                android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -112,12 +115,12 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="57dp"
                 android:layout_weight="1"
+                android:gravity="center|right"
                 android:text="密码"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -155,14 +158,15 @@
 
     <Button
         android:id="@+id/clebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="107dp"
+        android:layout_height="53dp"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
         android:layout_marginTop="37dp"
         android:layout_marginEnd="75dp"
         android:layout_marginRight="75dp"
         android:layout_marginBottom="357dp"
+        android:background="@drawable/bb_normal"
         android:text="清除"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

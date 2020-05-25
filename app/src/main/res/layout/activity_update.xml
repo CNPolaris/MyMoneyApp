@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="111dp"
             android:orientation="vertical"
-            android:background="@drawable/badge_dialog_bg_b">
+            android:background="@drawable/bb_normal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,10 +76,36 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/showicon"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="44dp"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="44dp"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"></LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/showicon"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

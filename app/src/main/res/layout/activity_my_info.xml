@@ -28,7 +28,7 @@
         android:layout_marginTop="45dp"
         android:layout_marginBottom="570dp"
         android:orientation="horizontal"
-        android:background="@drawable/user_bg"
+        android:background="@drawable/bb_normal"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,8 +60,9 @@
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="用户"
-                    android:textSize="36sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -75,8 +76,9 @@
                 android:id="@+id/showuser"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="18sp" />
+                android:gravity="center|left"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
     <View

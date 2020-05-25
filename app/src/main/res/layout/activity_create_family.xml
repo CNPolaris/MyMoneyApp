@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/plan_progress"
     tools:context=".CreateFamilyActivity">
 
     <LinearLayout
@@ -34,6 +35,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/score_act_vip"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -62,11 +64,12 @@
 
                         <TextView
                             android:id="@+id/textView20"
-                            android:layout_width="157dp"
+                            android:layout_width="169dp"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text="创建家庭"
-                            android:textSize="24sp" />
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -190,8 +193,10 @@
                         <Button
                             android:id="@+id/yesCreate"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="创建" />
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bb_normal"
+                            android:text="创建"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -203,7 +208,9 @@
                             android:id="@+id/clearEdit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="清除" />
+                            android:background="@drawable/bb_normal"
+                            android:text="清除"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout

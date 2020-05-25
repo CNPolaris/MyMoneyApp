@@ -28,7 +28,7 @@
         android:layout_width="409dp"
         android:layout_height="100dp"
         android:layout_marginBottom="575dp"
-        android:background="@drawable/badge_dialog_bg_b"
+        android:background="@drawable/bb_school"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,10 @@
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="日期" />
+                        android:gravity="center"
+                        android:text="日期"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -83,8 +86,9 @@
                         android:id="@+id/tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="14sp"
-                        android:filterTouchesWhenObscured="false"/>
+                        android:filterTouchesWhenObscured="false"
+                        android:gravity="center"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -104,7 +108,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="收入" />
+                        android:gravity="center"
+                        android:text="收入"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,7 +125,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="TextView" />
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -137,7 +147,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="支出" />
+                        android:gravity="center"
+                        android:text="支出"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -151,7 +164,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="TextView" />
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
