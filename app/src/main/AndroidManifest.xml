@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/myicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddFamilyActivity"></activity>
+        <activity android:name=".FamilyDetailActivity"></activity>
+        <activity android:name=".AddFamilyActivity" />
         <activity android:name=".CreateFamilyActivity" />
         <activity android:name="com.familyManger.CreateFamilyActivity" />
         <activity android:name=".FamilyActivity" />

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import data.DayData;
+import data.FamilyData;
 import data.GetData;
 import data.ItemData;
 import data.MonthData;
@@ -204,7 +205,7 @@ public class DBUtil {
                             lastone="1";
                         }
                     }
-                    String openSQL="create trigger Sync"+username+" on " +userdata+ " after insert " + " as " + " declare @num varchar(10),@user varchar(10),@reve varchar(10),@type varchar(10),@amount float,@trade varchar(53),@t datetime " + " begin " + " select @reve=inserted.revenue ,@type=inserted.types,@amount=inserted.Amount,@trade=inserted.tradeNotes,@t=inserted.time from inserted " + " set @user="+username + " set @num="+lastone + " insert into "+FAname+" values(@num,@user,@reve,@type,@amount,@trade,@t) " + " end";
+                    String openSQL="create trigger Sync"+username+" on " +userdata+ " after insert " + " as " + " declare @user varchar(10),@reve varchar(10),@type varchar(10),@amount float,@trade varchar(53),@t datetime " + " begin " + " select @reve=inserted.revenue ,@type=inserted.types,@amount=inserted.Amount,@trade=inserted.tradeNotes,@t=inserted.time from inserted " + " set @user="+username + " insert into "+FAname+" values(@user,@reve,@type,@amount,@trade,@t) " + " end";
                     preparedStatement1=connection.prepareStatement(openSQL);
                     //preparedStatement1.setString(1,username);
                     //preparedStatement1.setString(2,lastone);
@@ -254,6 +255,34 @@ public class DBUtil {
         }
         return flag;
     }
+    //查看家庭账单
+    public static List<FamilyData> getFamilyData(String username){
+        List<FamilyData>list=new ArrayList<FamilyData>();
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        boolean flag=false;
+        try{
+            flag=checkFamily(username);
+            if (flag==false){
+                String getSQL="select * from "+FAname;
+                connection=getSQLConnection();
+                preparedStatement=connection.prepareStatement(getSQL);
+                resultSet=preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    list.add(new FamilyData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getFloat(5),resultSet.getString(6),resultSet.getDate(7)));
+                }
+                System.out.println(getSQL);
+
+            }
+            else {
+                return list;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     //检查是否已经加入家庭
     public static boolean checkFamily(String username){
         boolean flag=false;
@@ -273,6 +302,7 @@ public class DBUtil {
                     flag=true;
                 }else {
                     flag=false;
+                    FAname=temp;
                 }
             }else {
                 flag=true;

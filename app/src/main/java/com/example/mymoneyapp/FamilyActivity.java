@@ -72,7 +72,9 @@ public class FamilyActivity extends AppCompatActivity {
                         }
                         break;
                     case 4://家庭账单
-
+                        Intent intent4 = new Intent(FamilyActivity.this, FamilyDetailActivity.class);
+                        //intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent4);
                         break;
                     case 5://退出家庭
                         dropFamily();
