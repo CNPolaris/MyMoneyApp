@@ -54,14 +54,28 @@ public class DBUtil {
     /*插入语句，将新的用户名和密码插入到userinfo*/
     public static void Insert(String t, String s) throws SQLException {
         PreparedStatement pstm = null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
         Connection connection = null;
         Statement stmt=null;
-        String sql = "insert into UserInfo(username,password)values(?,?)";
+        int lastone=0;
+        String lensql="select max(userID) from UserInfo";
+        String sql = "insert into UserInfo(userID,username,password)values(?,?,?)";
         try {
             connection = getSQLConnection();
+            preparedStatement=connection.prepareStatement(lensql);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                int last=resultSet.getInt(1);
+                lastone=last+1;
+
+            }else{
+                lastone=0;
+            }
             pstm = connection.prepareStatement(sql);
-            pstm.setString(1,t);
-            pstm.setString(2,s);
+            pstm.setInt(1,lastone);
+            pstm.setString(2,t);
+            pstm.setString(3,s);
             pstm.executeUpdate();
             System.out.println("插入成功");
         } catch (SQLException e) {
@@ -207,7 +221,7 @@ public class DBUtil {
         }
         else{
             Insert(username,password);
-            creatData(username);
+            //creatData(username);
             return true;
         }
     }

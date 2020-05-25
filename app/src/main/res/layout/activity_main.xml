@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="false"
+    android:background="@drawable/badge_dialog_bg_b"
     tools:context=".MainActivity">
 
     <TextView
@@ -121,6 +122,7 @@
         android:layout_marginRight="26dp"
         android:layout_marginBottom="263dp"
         android:focusableInTouchMode="false"
+        android:background="@drawable/time_float_bar_bg2"
         android:text="登录"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/RegisteredButton"
@@ -138,6 +140,7 @@
         android:layout_marginRight="78dp"
         android:layout_marginBottom="263dp"
         android:focusableInTouchMode="false"
+        android:background="@drawable/time_float_bar_bg2"
         android:text="注册"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

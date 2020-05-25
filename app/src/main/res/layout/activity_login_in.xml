@@ -30,6 +30,7 @@
         android:layout_width="407dp"
         android:layout_height="61dp"
         android:orientation="horizontal"
+        android:background="@drawable/badge_dialog_bg_b"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
