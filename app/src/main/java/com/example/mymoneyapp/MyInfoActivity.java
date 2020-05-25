@@ -94,6 +94,9 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
                 System.out.println(position);
                 switch (position){
                     case 0://家庭管理
+                        Intent intent3 = new Intent(MyInfoActivity.this, FamilyActivity.class);
+                        intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent3);
                         break;
                     case 1://清除数据
                         clearowndata();

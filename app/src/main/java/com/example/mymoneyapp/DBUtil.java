@@ -92,7 +92,57 @@ public class DBUtil {
             }
         }
     }
+    //创建家庭
+    public static void createFamily(String familyname,String familyown,String familycode){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        String createSQL="insert into familyinfo values(?,?,?)";
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(createSQL);
+            preparedStatement.setString(1,familyname);
+            preparedStatement.setString(2,familyown);
+            preparedStatement.setString(3,familycode);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            try{
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static boolean checkFamily(String username){
+        boolean flag=false;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        String sql="select familyname from UserInfo where username=?";
+        try{
+            connection=getSQLConnection();
+            preparedStatement=connection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                flag=false;
+            }else {
+                flag=true;
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } try{
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
     public static void sle() throws SQLException {
         //PreparedStatement pstm = null;
         String s="";

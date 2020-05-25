@@ -14,7 +14,10 @@
         android:roundIcon="@drawable/myicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowMonthData"></activity>
+        <activity android:name=".CreateFamilyActivity"></activity>
+        <activity android:name="com.familyManger.CreateFamilyActivity" />
+        <activity android:name=".FamilyActivity" />
+        <activity android:name=".ShowMonthData" />
         <activity android:name=".UpdateActivity" />
         <activity
             android:name=".MenuActivity"
