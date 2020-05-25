@@ -115,19 +115,79 @@ public class DBUtil {
             }
         }
     }
+    //加入家庭
+    public static boolean addFamily(String familyname,String username,String familycode){
+        String check="select familyname,familycode from familyinfo where familyname=?";
+        String add="update UserInfo set familyname=? where username=?";
+        String addColu="alter table familyinfo add ren_"+username+" varchar(10) null";
+        String upFA="update familyinfo set ren_"+username+" =? where familyname=?";
+        PreparedStatement pstmCheck=null,pstmAdd=null,pstmcolu=null,pstmup=null;
+        Connection connection=null;
+        ResultSet resultSet=null;
+        boolean flag=false;
+        try{
+            connection=getSQLConnection();
+            pstmCheck=connection.prepareStatement(check);
+            pstmCheck.setString(1,familyname);
+            resultSet=pstmCheck.executeQuery();
+            if(resultSet.next()){
+                flag=true;
+                String name=resultSet.getString(1);
+                String code=resultSet.getString(2);
+                if(name.equals(familyname)&&code.equals(familycode)){
+                    flag=true;
+                    pstmAdd=connection.prepareStatement(add);
+                    pstmAdd.setString(1,familyname);
+                    pstmAdd.setString(2,username);
+                    pstmAdd.executeUpdate();
+
+                    pstmcolu=connection.prepareStatement(addColu);
+                    pstmcolu.executeUpdate();
+
+                    pstmup=connection.prepareStatement(upFA);
+                    pstmup.setString(1,username);
+                    pstmup.setString(2,familyname);
+                    pstmup.executeUpdate();
+
+                }
+            }else{
+                flag=false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            resultSet.close();
+            pstmCheck.close();
+            pstmAdd.close();
+            pstmcolu.close();
+            pstmup.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+    //检查是否已经加入家庭
     public static boolean checkFamily(String username){
         boolean flag=false;
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
         String sql="select familyname from UserInfo where username=?";
+        String temp="";
         try{
             connection=getSQLConnection();
             preparedStatement=connection.prepareStatement(sql);
             preparedStatement.setString(1,username);
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next()){
-                flag=false;
+                temp=resultSet.getString(1);
+                if(temp==null){
+                    flag=true;
+                }else {
+                    flag=false;
+                }
             }else {
                 flag=true;
             }

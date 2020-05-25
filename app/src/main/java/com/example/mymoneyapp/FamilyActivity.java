@@ -44,12 +44,14 @@ public class FamilyActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0://创建家庭
-                        Intent intent1 = new Intent(FamilyActivity.this, CreateFamilyActivity.class);
-                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent1);
+                        Intent intent0 = new Intent(FamilyActivity.this, CreateFamilyActivity.class);
+                        intent0.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent0);
                         break;
                     case 1://加入家庭
-
+                        Intent intent1 = new Intent(FamilyActivity.this, AddFamilyActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
                         break;
                     case 2://开启同步
 
