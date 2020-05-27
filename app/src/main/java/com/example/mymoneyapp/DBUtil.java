@@ -122,11 +122,11 @@ public class DBUtil {
     public static boolean addFamily(String familyname,String username,String familycode){
         String check="select familyname,familycode from familyinfo where familyname=?";
         String add="update UserInfo set familyname=? where username=?";
-        String addColu="alter table familyinfo add ren_"+username+" varchar(10) null";
-        String upFA="update familyinfo set ren_"+username+" =? where familyname=?";
+        String num="select num from familyinfo where="+familyname;
+        String n="";
         PreparedStatement pstmCheck=null,pstmAdd=null,pstmcolu=null,pstmup=null;
         Connection connection=null;
-        ResultSet resultSet=null;
+        ResultSet resultSet=null,resultSet1=null;
         boolean flag=false;
         try{
             connection=getSQLConnection();
@@ -144,13 +144,13 @@ public class DBUtil {
                     pstmAdd.setString(2,username);
                     pstmAdd.executeUpdate();
 
+                    pstmup=connection.prepareStatement(num);
+                    resultSet1=pstmup.executeQuery();
+                    n=String.valueOf(resultSet1.getInt(1)+1);
+
+                    String addColu="update familyinfo " +" set p"+n+"='" +username+ "' where familyname='"+familyname+"'";
                     pstmcolu=connection.prepareStatement(addColu);
                     pstmcolu.executeUpdate();
-
-                    pstmup=connection.prepareStatement(upFA);
-                    pstmup.setString(1,username);
-                    pstmup.setString(2,familyname);
-                    pstmup.executeUpdate();
 
                     FAname=familyname;
                 }
@@ -272,8 +272,6 @@ public class DBUtil {
                 while (resultSet.next()){
                     list.add(new FamilyData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getFloat(5),resultSet.getString(6),resultSet.getDate(7)));
                 }
-                System.out.println(getSQL);
-
             }
             else {
                 return list;
@@ -281,7 +279,45 @@ public class DBUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try{
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return list;
+    }
+    //退出家庭
+    public static void dropFamily(String username){
+        Connection connection=null;
+        PreparedStatement preparedStatement1=null,preparedStatement2=null,preparedStatement3=null,preparedStatement4=null;
+        ResultSet resultSet=null;
+        boolean flag=false;
+        try{
+            flag=checkFamily(username);
+            if(flag==false){
+                String delLine="delete from  "+FAname+"where member='"+username+"'";
+                String upUser="update UserInfo set familyname=NULL where username='"+username+"'";
+                String find="select name from familyinfo where familyname='"+FAname+"'";
+                try{
+                    connection=getSQLConnection();
+                    preparedStatement1=connection.prepareStatement(delLine);
+                    preparedStatement1.executeUpdate();
+
+                    preparedStatement2=connection.prepareStatement(upUser);
+                    preparedStatement2.executeUpdate();
+
+                    preparedStatement3=connection.prepareStatement(find);
+                    resultSet=preparedStatement3.executeQuery();
+                    String colu=resultSet.getString(1);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //检查是否已经加入家庭
     public static boolean checkFamily(String username){
